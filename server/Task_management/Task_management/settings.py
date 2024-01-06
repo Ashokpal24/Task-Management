@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'User',
+    'ProjectGroup',
     'Task',
-    'Subtask'
+    'Subtask',
 ]
 
 MIDDLEWARE = [
