@@ -15,7 +15,7 @@ const RegisterPage = () => {
         <Box sx={{ ...flexStyle, width: '30%' }}>
             <h1>Hi There ✋</h1>
             <p>Please Provide email, password and username 🙂</p>
-            <form noValidate>
+            <form>
                 <TextField
                     sx={{ marginBottom: '10px' }}
                     variant="outlined"

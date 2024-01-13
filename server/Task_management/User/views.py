@@ -24,7 +24,7 @@ class UserRegisterationView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserRegisterationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print("validated")
+        # print("validated")
         user = serializer.save()
         token = get_token_from_user(user)
         return Response(
@@ -45,8 +45,8 @@ class UserLoginView(APIView):
         user = authenticate(username=username, password=password)
         if not user:
             return Response(
-                {"Error": "Email or password is not valid!"},
-                status=status.HTTP_200_OK
+                {"Error": ["Email or password is not valid!"]},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         token = get_token_from_user(user)

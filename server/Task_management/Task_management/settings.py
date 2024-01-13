@@ -29,6 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_WHITELIST = [
+    'https://fuzzy-rotary-phone-674p77v5gqr2xpv-5173.app.github.dev'
+]
 
 # Application definition
 
