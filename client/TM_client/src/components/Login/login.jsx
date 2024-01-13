@@ -3,7 +3,7 @@ import Box from '@mui/system/Box'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
-
+import { saveJWTToken, loadJWTToken, checkExpiration } from '../utils.jsx';
 
 const flexStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
@@ -44,7 +44,10 @@ const LoginPage = () => {
                 return;
             }
             const data = await response.json();
-            console.log(data.data);
+            saveJWTToken({ accessToken: data.Token['access'], refreshToken: data.Token['refresh'] })
+            const token = loadJWTToken()
+            console.log(token.accessToken)
+            checkExpiration(token.accessToken)
             setStatus('success')
             setALertMessage('Login Successful😄')
         }

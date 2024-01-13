@@ -3,6 +3,7 @@ import Box from '@mui/system/Box'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
+import { saveJWTToken } from '../utils.jsx';
 
 
 const flexStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center' }
@@ -64,7 +65,7 @@ const RegisterPage = () => {
                 return;
             }
             const data = await response.json();
-            console.log(data);
+            saveJWTToken({ accessToken: data.Token['access'], refreshToken: data.Token['refresh'] })
             setStatus('success')
             setALertMessage('Register Successful😄')
         }

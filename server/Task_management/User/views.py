@@ -15,7 +15,7 @@ from .models import User
 def get_token_from_user(user):
     refresh = RefreshToken.for_user(user)
     return {
-        "Refresh": str(refresh),
+        "refresh": str(refresh),
         "access": str(refresh.access_token)  # type: ignore
     }
 
