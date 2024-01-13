@@ -17,8 +17,6 @@ const LoginPage = () => {
     const [alertMessage, setALertMessage] = useState('')
     const loginURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/login/'
 
-
-
     const handleLogin = async () => {
         try {
             const response = await fetch(loginURL, {
@@ -58,7 +56,7 @@ const LoginPage = () => {
 
 
     return (
-        <Box sx={{ ...flexStyle, width: '30%' }}>
+        <Box sx={{ ...flexStyle, width: '35%' }}>
             <h1>Welcome back 😄</h1>
             <p>Please enter email and password 💻</p>
             <form>

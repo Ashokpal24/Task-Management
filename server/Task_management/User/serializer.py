@@ -20,7 +20,7 @@ class UserRegisterationSerializer(serializers.ModelSerializer):
         password2 = attrs.get('password2')
         if password != password2:
             raise serializers.ValidationError(
-                "Password and Confirm Password mismatched !"
+                "Password and Confirm Password mismatched"
             )
         return attrs
 
