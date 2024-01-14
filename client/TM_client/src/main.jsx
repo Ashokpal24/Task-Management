@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import AuthPage from './components/Auth/authPage'
 import TestPage from './components/Sections/test.jsx'
 import RegisterPage from './components/Auth/register.jsx'
+import '../static/index.css'
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

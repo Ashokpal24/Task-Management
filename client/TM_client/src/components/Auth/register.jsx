@@ -3,12 +3,12 @@ import Box from '@mui/system/Box'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
-import { saveJWTToken } from '../utils.jsx';
+import { saveJWTToken, registerURL } from '../utils.jsx';
 
 
 const flexStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
-const RegisterPage = () => {
+const RegisterPage = ({ setAuthorized }) => {
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -16,11 +16,10 @@ const RegisterPage = () => {
     const [password2, setPassword2] = useState('')
     const [status, setStatus] = useState('')
     const [alertMessage, setALertMessage] = useState('')
-    const loginURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/register/'
 
     const handleRegister = async () => {
         try {
-            const response = await fetch(loginURL, {
+            const response = await fetch(registerURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,6 +67,8 @@ const RegisterPage = () => {
             saveJWTToken({ accessToken: data.Token['access'], refreshToken: data.Token['refresh'] })
             setStatus('success')
             setALertMessage('Register Successful😄')
+            setTimeout(() => setAuthorized(true), 1000)
+
         }
         catch (error) {
             console.error("An error occurred during Registeration:", error);

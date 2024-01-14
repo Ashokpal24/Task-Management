@@ -3,19 +3,18 @@ import Box from '@mui/system/Box'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
-import { saveJWTToken, loadJWTToken, checkExpiration } from '../utils.jsx';
+import { saveJWTToken, loginURL } from '../utils.jsx';
 
 const flexStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
 
 
 
-const LoginPage = () => {
+const LoginPage = ({ setAuthorized }) => {
     const [username, setUsername] = useState('')
     const [password, SetPassword] = useState('')
     const [status, setStatus] = useState('')
     const [alertMessage, setALertMessage] = useState('')
-    const loginURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/login/'
 
     const handleLogin = async () => {
         try {
@@ -45,11 +44,11 @@ const LoginPage = () => {
             }
             const data = await response.json();
             saveJWTToken({ accessToken: data.Token['access'], refreshToken: data.Token['refresh'] })
-            const token = loadJWTToken()
-            console.log(token.accessToken)
-            checkExpiration(token.accessToken)
             setStatus('success')
             setALertMessage('Login Successful😄')
+            setTimeout(() => setAuthorized(true), 1000)
+
+
         }
         catch (error) {
             console.error("An error occurred during login:", error);

@@ -12,19 +12,22 @@ const AuthPage = ({ isSigned }) => {
     const [isSignedUp, setSignUp] = useState(true)
     const [isAuthorized, SetAuthorized] = useState(false)
     const navigateTo = useNavigate()
+
+    useEffect(() => {
+        if (isAuthorized) navigateTo('/test')
+    }, [isAuthorized])
+
     useEffect(() => {
         setSignUp(isSigned)
         const token = loadJWTToken()
         if (token && checkExpiration(token.accessToken)) {
-            navigateTo('/test')
-            SetAuthorized(true)
+            if (isAuthorized == false) SetAuthorized(true)
         }
-    }, []
-    )
+    }, [])
 
     return (
         <Box sx={{ ...flexStyle, width: '100%', height: '97vh', fontFamily: 'sans-serif' }}>
-            {isSignedUp ? <LoginPage /> : <RegisterPage />}
+            {isSignedUp ? <LoginPage setAuthorized={SetAuthorized} /> : <RegisterPage setAuthorized={SetAuthorized} />}
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                 <p>{isSignedUp ? 'Not signed up yet? ' : 'Already have account?'}</p>
                 <Link to={isSignedUp ? '/register' : '/login'}

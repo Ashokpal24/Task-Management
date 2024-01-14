@@ -1,5 +1,10 @@
 import { jwtDecode } from "jwt-decode";
 
+const loginURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/login/'
+const registerURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/register/'
+const projectListURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/project/'
+const taskListURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/task/'
+
 const saveJWTToken = ({ accessToken, refreshToken }) => {
 
     localStorage.setItem('Token', JSON.stringify({
@@ -29,5 +34,5 @@ const checkExpiration = (accessToken) => {
 }
 
 
-export { saveJWTToken, loadJWTToken, deleteJWTToken, checkExpiration }
+export { saveJWTToken, loadJWTToken, deleteJWTToken, checkExpiration, loginURL, registerURL, projectListURL, taskListURL }
 
