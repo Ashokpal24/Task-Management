@@ -8,6 +8,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardActions from '@mui/material/CardActions'
 import { useNavigate } from 'react-router-dom';
 import {
     loadJWTToken,
@@ -77,8 +81,10 @@ const getTaskItem = async ({ token, taskId, setTaskItem }) => {
             console.error(errorData)
         }
         const data = await response.json();
+        let new_data = []
+        new_data.push(data)
         console.log(data)
-        setTaskItem(data)
+        setTaskItem(new_data)
     }
     catch (error) {
         console.error("An error occurred during retriving of data:", error);
@@ -110,7 +116,6 @@ const TestPage = () => {
         }
         SetCanRender(true)
     }, [])
-    console.log(taskList)
 
     return !canRender ? (<></>) : (
         <>
@@ -166,9 +171,8 @@ const TestPage = () => {
                             {taskList.map((item, index) => (
                                 <ListItem disablePadding key={item.id} >
                                     <ListItemButton
-                                        onClick={() => {
-                                            getTaskItem({ token: token, taskId: item.id, setTaskItem: SetTaskItem })
-                                        }}>
+                                        onClick={() => getTaskItem({ token: token, taskId: item.id, setTaskItem: SetTaskItem })
+                                        }>
                                         <ListItemText>
                                             {item.title}
                                         </ListItemText>
@@ -186,7 +190,36 @@ const TestPage = () => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <p>something</p>
+                        {taskItem != [] ?
+                            taskItem.map((task, index) => (
+                                <Card sx={{ width: '400px' }} key={task.id}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                {task.title}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                                                Rem dolorem vero commodi illo ducimus accusamus ratione nesciunt consequuntur totam itaque.
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions>
+                                        <List >
+                                            {task.subtasks.map((subtask, index) => (
+                                                <ListItem disablePadding key={'subtask' + subtask.id} >
+                                                    <ListItemButton>
+                                                        <ListItemText>
+                                                            {index + 1} {subtask.title}
+                                                        </ListItemText>
+                                                    </ListItemButton>
+                                                </ListItem>
+                                            ))}
+                                        </List>
+                                    </CardActions>
+                                </Card>
+                            ))
+                            : <>Nothing to view 😅</>}
                     </Box>
 
                 </Box>
