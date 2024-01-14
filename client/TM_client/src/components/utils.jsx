@@ -17,10 +17,10 @@ const checkExpiration = (accessToken) => {
     const currentTime = Date.now();
     if (currentTime > expirationTime) {
         console.log('Token has expired');
-    } else {
-        console.log('Token is still valid');
+        return false
     }
-
+    console.log('Token is still valid');
+    return true
 }
 
 

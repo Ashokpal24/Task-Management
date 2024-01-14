@@ -1,11 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import AuthPage from './components/Login/authPage'
+import AuthPage from './components/Auth/authPage'
+import TestPage from './components/Sections/test.jsx'
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthPage />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/'
+          element={
+            <div style={{
+              width: '100%',
+              height: '100vh',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <h1>Hello world 🥳</h1 >
+            </div>
+          }
+        />
+        <Route path="/login" Component={AuthPage} />
+        <Route path="/test" Component={TestPage} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
 )
