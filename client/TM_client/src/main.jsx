@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import AuthPage from './components/Auth/authPage'
 import TestPage from './components/Sections/test.jsx'
+import RegisterPage from './components/Auth/register.jsx'
+
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -25,7 +27,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </div>
           }
         />
-        <Route path="/login" Component={AuthPage} />
+        <Route path="/login" element={<AuthPage isSigned={true} />} />
+        <Route path="/register" element={<AuthPage isSigned={false} />} />
         <Route path="/test" Component={TestPage} />
       </Routes>
     </BrowserRouter>

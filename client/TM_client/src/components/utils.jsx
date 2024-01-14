@@ -11,6 +11,11 @@ const loadJWTToken = () => {
     return JSON.parse(localStorage.getItem('Token'))
 }
 
+const deleteJWTToken = () => {
+    localStorage.removeItem('Token')
+    console.log('Token deleted')
+}
+
 const checkExpiration = (accessToken) => {
     const decodedToken = jwtDecode(accessToken);
     const expirationTime = decodedToken.exp * 1000;
@@ -24,5 +29,5 @@ const checkExpiration = (accessToken) => {
 }
 
 
-export { saveJWTToken, loadJWTToken, checkExpiration }
+export { saveJWTToken, loadJWTToken, deleteJWTToken, checkExpiration }
 

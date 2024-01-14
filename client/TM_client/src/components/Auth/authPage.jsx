@@ -3,20 +3,21 @@ import Box from '@mui/system/Box'
 import LoginPage from './login.jsx'
 import RegisterPage from './register.jsx'
 import { loadJWTToken, checkExpiration } from '../utils.jsx'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const flexStyle = { display: 'flex', flexDirection: 'column', alignItems: 'center' }
 
-const AuthPage = () => {
+const AuthPage = ({ isSigned }) => {
     const [isSignedUp, setSignUp] = useState(true)
     const [isAuthorized, SetAuthorized] = useState(false)
     const navigateTo = useNavigate()
-
     useEffect(() => {
+        setSignUp(isSigned)
         const token = loadJWTToken()
         if (token && checkExpiration(token.accessToken)) {
             navigateTo('/test')
+            SetAuthorized(true)
         }
     }, []
     )
@@ -26,14 +27,14 @@ const AuthPage = () => {
             {isSignedUp ? <LoginPage /> : <RegisterPage />}
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                 <p>{isSignedUp ? 'Not signed up yet? ' : 'Already have account?'}</p>
-                <a href='/'
+                <Link to={isSignedUp ? '/register' : '/login'}
                     onClick={() => {
                         const signedState = isSignedUp
                         setSignUp(!signedState)
                     }}
-                >click here</a>
+                >click here</Link>
             </Box>
-        </Box>
+        </Box >
     )
 }
 
