@@ -33,6 +33,7 @@ class TaskListView(APIView):
     def post(self, request, *args, **kwargs):
         data = {
             "title": request.data.get('title'),
+            "project_id": request.data.get('project_id'),
             "created_by": request.user.pk
         }
         serializer = TaskListSerializer(data=data)

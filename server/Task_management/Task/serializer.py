@@ -11,6 +11,7 @@ class TaskListSerializer(serializers.ModelSerializer):
                   'title',
                   'mark_done',
                   'percentage',
+                  'project_id',
                   'created_by',
                   'created_at',
                   'updated_at']
@@ -31,6 +32,7 @@ class TaskDetailedSerializer(serializers.ModelSerializer):
                   'mark_done',
                   'percentage',
                   'subtasks',
+                  'project_id',
                   'created_by',
                   'created_at',
                   'updated_at']

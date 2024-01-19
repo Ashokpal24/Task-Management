@@ -53,6 +53,21 @@ class ProjectListView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class ProjectDetailedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request,project_id, *args, **kwargs):
+        project_instance = ProjectGroup.objects.get(id=project_id)
+        if not project_instance:
+            return Response(
+                {"Msg": f"No Project with id {project_instance.pk} available"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = ProjectDetailedSerializer(instance=project_instance)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 class ProjectMembershipView(APIView):
     permission_classes = [IsAuthenticated]

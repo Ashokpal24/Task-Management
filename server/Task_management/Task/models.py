@@ -1,5 +1,6 @@
 from django.db import models
 from User.models import User
+from ProjectGroup.models import ProjectGroup
 
 
 class Task(models.Model):
@@ -11,6 +12,13 @@ class Task(models.Model):
     percentage = models.FloatField(verbose_name="Percentage", default=0.0)
 
     mark_done = models.BooleanField(verbose_name="Completed", default=False)
+
+    project_id = models.ForeignKey(
+        ProjectGroup,
+        on_delete=models.CASCADE,
+        verbose_name="Project ID",
+        related_name='task_list'
+    )
 
     created_by = models.ForeignKey(
         User,
