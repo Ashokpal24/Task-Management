@@ -11,8 +11,8 @@ import {
   CardContent,
   CardActions,
   Button,
-  Box,
-  Grid,
+  // Box,
+  // Grid,
 } from "@mui/material";
 import "./style.css";
 
@@ -26,25 +26,37 @@ const DDList = () => {
   const [ListContainer2, SetListContainer2] = useState(["Task 4", "Task 5"]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
-  // const isMouseUp = useRef(true);
-  // const isMouseExited = useRef([true, null, null]);
+  const [isMouseExit, SetMouseExit] = useState(false);
+  const isMouseUp = useRef(true);
+  const isMouseExited = useRef([true, null, null]);
 
-  // useEffect(() => {
-  //   retainList();
-  // }, [isMouseUp.current, isMouseExited.current]);
+  useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  });
 
-  // const retainList = () => {
-  //   const [currStatus, currDragItem, currSetList] = isMouseExited.current;
-  //   if (isMouseUp.current && currStatus && currDragItem) {
-  //     currSetList((prevList) => [
-  //       ...prevList.filter((fitem) => fitem !== currDragItem),
-  //       currDragItem,
-  //     ]);
-  //   }
-  // };
+  useEffect(() => {
+    retainList();
+  }, [isMouseUp.current, isMouseExited.current]);
+
+  const retainList = () => {
+    const [currStatus, currDragItem, currSetList] = isMouseExited.current;
+    if (isMouseUp.current && currStatus && currDragItem) {
+      currSetList((prevList) => [
+        ...prevList.filter((fitem) => fitem !== currDragItem),
+        currDragItem,
+      ]);
+    }
+  };
 
   const handleMouseUp = (event) => {
-    // isMouseUp.current = true;
+    isMouseUp.current = true;
+
+    console.log(isMouseExit);
     var ghost = document.getElementById("drag-ghost");
     SetIsDragging(false);
     SetDraggedItem(null);
@@ -64,10 +76,9 @@ const DDList = () => {
   };
 
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
-    // isMouseUp.current = false;
+    isMouseUp.current = false;
 
     const clone = event.target.parentNode.cloneNode(true);
-
     SetIsDragging(true);
     SetDraggedItem(item);
     event.target.parentNode.remove();
@@ -88,7 +99,11 @@ const DDList = () => {
   };
 
   const handleMouseEnter = ({ event, index, item, datalist, setDataList }) => {
-    // isMouseExited.current = [false, draggedItem, setDataList];
+    SetMouseExit((preValue) => {
+      const newValue = true;
+      return newValue;
+    });
+    isMouseExited.current = [false, draggedItem, setDataList];
     if (isDragging && draggedItem != item) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       newList.splice(index, 0, draggedItem);
@@ -97,7 +112,11 @@ const DDList = () => {
   };
 
   const handleMouseExit = ({ event, datalist, setDataList }) => {
-    // isMouseExited.current = [true, draggedItem, setDataList];
+    SetMouseExit((preValue) => {
+      const newValue = false;
+      return newValue;
+    });
+    isMouseExited.current = [true, draggedItem, setDataList];
     if (isDragging) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       setDataList(newList);
@@ -223,17 +242,18 @@ const DDList = () => {
     );
   };
 
-  document.addEventListener("mousemove", handleMouseMove);
-  document.addEventListener("mouseup", handleMouseUp);
   return (
-    <Box
+    <div
       className="task-container"
-      sx={{
+      style={{
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-evenly",
         alignContent: "first",
       }}
+      // onMouseUp={(event) => {
+      //   handleMouseUp(event);
+      // }}
     >
       <ListComponent
         index={0}
@@ -249,7 +269,7 @@ const DDList = () => {
       />
       {/* <ListComponent datalist={ListContainer2} key='foo2' /> */}
       {/* <ListComponent datalist={ListContainer2} key='foo2' /> */}
-    </Box>
+    </div>
   );
 };
 export default DDList;
