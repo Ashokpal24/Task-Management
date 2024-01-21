@@ -55,7 +55,6 @@ const DDList = () => {
 
   const handleMouseUp = (event) => {
     isMouseUp.current = true;
-    // console.log(isMouseExit);
     var ghost = document.getElementById("drag-ghost");
     SetIsDragging(false);
     SetDraggedItem(null);
@@ -98,38 +97,24 @@ const DDList = () => {
   };
 
   const handleMouseEnter = ({ event, index, item, datalist, setDataList }) => {
-    // SetMouseExit((preValue) => {
-    //   const newValue = true;
-    //   return newValue;
-    // });
     isMouseExited.current = [false, draggedItem, setDataList];
-    if (isDragging && draggedItem != item && index != -1) {
+    if (isDragging && draggedItem != item) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       newList.splice(index, 0, draggedItem);
-      setDataList(newList);
-    } else if (isDragging && draggedItem && index == -1) {
-      isMouseExited.current = [false, draggedItem, setDataList];
-      var newList = datalist;
-      newList.push(draggedItem);
       setDataList(newList);
     }
   };
 
   const handleMouseMainListEnter = ({ event, datalist, setDataList }) => {
-    handleMouseEnter({
-      event: event,
-      index: -1,
-      item: null,
-      datalist: datalist,
-      setDataList: setDataList,
-    });
+    if (isDragging && draggedItem && datalist.length == 0) {
+      console.log("yyy");
+      isMouseExited.current = [false, draggedItem, setDataList];
+      var newList = [draggedItem];
+      setDataList(newList);
+    }
   };
 
   const handleMouseExit = ({ event, datalist, setDataList }) => {
-    // SetMouseExit((preValue) => {
-    //   const newValue = false;
-    //   return newValue;
-    // });
     isMouseExited.current = [true, draggedItem, setDataList];
     if (isDragging) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
@@ -150,27 +135,25 @@ const DDList = () => {
           sx={{
             marginBottom: "1rem",
           }}
+          onMouseEnter={(event) => {
+            handleMouseEnter({
+              event: event,
+              index: index,
+              item: item,
+              datalist: datalist,
+              setDataList: setDataList,
+            });
+          }}
+          onMouseDown={(event) => {
+            handleMouseDown({
+              event: event,
+              item: item,
+              datalist: datalist,
+              setDataList: setDataList,
+            });
+          }}
         >
-          <CardActionArea
-            onMouseEnter={(event) => {
-              //   console.log(isMouseEnter);
-              handleMouseEnter({
-                event: event,
-                index: index,
-                item: item,
-                datalist: datalist,
-                setDataList: setDataList,
-              });
-            }}
-            onMouseDown={(event) => {
-              handleMouseDown({
-                event: event,
-                item: item,
-                datalist: datalist,
-                setDataList: setDataList,
-              });
-            }}
-          >
+          <CardActionArea>
             <CardContent sx={{ pointerEvents: "none" }}>
               <Typography variant="h6" sx={{ pointerEvents: "none" }}>
                 {item}
@@ -220,7 +203,7 @@ const DDList = () => {
       <List
         className="glass"
         sx={{
-          minHeight: "200px",
+          minHeight: "260px",
           width: "360px",
           boxShadow: 2,
           display: "flex",
