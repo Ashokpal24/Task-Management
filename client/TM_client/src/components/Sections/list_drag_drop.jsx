@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   List,
   ListItem,
@@ -21,13 +21,30 @@ const DDList = () => {
     "Task 1",
     "Task 2",
     "Task 3",
-    "Task8",
+    "Task 8",
   ]);
   const [ListContainer2, SetListContainer2] = useState(["Task 4", "Task 5"]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
+  // const isMouseUp = useRef(true);
+  // const isMouseExited = useRef([true, null, null]);
 
-  const handleMouseUp = (props) => {
+  // useEffect(() => {
+  //   retainList();
+  // }, [isMouseUp.current, isMouseExited.current]);
+
+  // const retainList = () => {
+  //   const [currStatus, currDragItem, currSetList] = isMouseExited.current;
+  //   if (isMouseUp.current && currStatus && currDragItem) {
+  //     currSetList((prevList) => [
+  //       ...prevList.filter((fitem) => fitem !== currDragItem),
+  //       currDragItem,
+  //     ]);
+  //   }
+  // };
+
+  const handleMouseUp = (event) => {
+    // isMouseUp.current = true;
     var ghost = document.getElementById("drag-ghost");
     SetIsDragging(false);
     SetDraggedItem(null);
@@ -36,12 +53,21 @@ const DDList = () => {
     }
   };
 
+  const handleMouseMove = (event) => {
+    if (isDragging) {
+      var ghost = document.getElementById("drag-ghost");
+      if (ghost) {
+        ghost.style.left = `${event.pageX}px`;
+        ghost.style.top = `${event.pageY}px`;
+      }
+    }
+  };
+
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
-    // console.log(event.target.parentNode)
+    // isMouseUp.current = false;
 
     const clone = event.target.parentNode.cloneNode(true);
-    const newList = datalist.filter((fitem) => fitem !== item);
-    setDataList(newList);
+
     SetIsDragging(true);
     SetDraggedItem(item);
     event.target.parentNode.remove();
@@ -51,35 +77,30 @@ const DDList = () => {
 
     clone.id = "drag-ghost";
     clone.style.position = "absolute";
-    clone.style.top = "0px";
-    clone.style.left = "-75px";
+    clone.style.left = `${event.pageX}px`;
+    clone.style.top = `${event.pageY}px`;
+    clone.style.transform = "translate(-50%,-50%)";
     clone.style.width = "360px";
     clone.style.rotate = "5deg";
     clone.style.pointerEvents = "none";
     clone.style.zIndex = 100;
-    clone.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
     document.body.appendChild(clone);
   };
+
   const handleMouseEnter = ({ event, index, item, datalist, setDataList }) => {
+    // isMouseExited.current = [false, draggedItem, setDataList];
     if (isDragging && draggedItem != item) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       newList.splice(index, 0, draggedItem);
       setDataList(newList);
     }
   };
+
   const handleMouseExit = ({ event, datalist, setDataList }) => {
+    // isMouseExited.current = [true, draggedItem, setDataList];
     if (isDragging) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       setDataList(newList);
-    }
-  };
-
-  const handleMouseMove = (event) => {
-    if (isDragging) {
-      var ghost = document.getElementById("drag-ghost");
-      if (ghost) {
-        ghost.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
-      }
     }
   };
 
@@ -99,7 +120,7 @@ const DDList = () => {
         >
           <CardActionArea
             onMouseEnter={(event) => {
-              console.log("Now entering: ", item);
+              //   console.log(isMouseEnter);
               handleMouseEnter({
                 event: event,
                 index: index,
@@ -178,7 +199,6 @@ const DDList = () => {
           borderImage: "linear-gradient(90deg, blue, red, orange) 1",
         }}
         onMouseLeave={(event) => {
-          console.log("Now exiting: ", index);
           handleMouseExit({
             event: event,
             datalist: datalist,
