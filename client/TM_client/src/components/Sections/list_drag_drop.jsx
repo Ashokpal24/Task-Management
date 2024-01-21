@@ -14,6 +14,7 @@ import {
   // Box,
   // Grid,
 } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
 
 const DDList = () => {
@@ -88,7 +89,7 @@ const DDList = () => {
     clone.style.position = "absolute";
     clone.style.left = `${event.pageX}px`;
     clone.style.top = `${event.pageY}px`;
-    clone.style.transform = "translate(-50%,-50%)";
+    clone.style.transform = "translate(-10%,-10%)";
     clone.style.width = "360px";
     clone.style.rotate = "5deg";
     clone.style.pointerEvents = "none";
@@ -135,25 +136,26 @@ const DDList = () => {
           sx={{
             marginBottom: "1rem",
           }}
-          onMouseEnter={(event) => {
-            handleMouseEnter({
-              event: event,
-              index: index,
-              item: item,
-              datalist: datalist,
-              setDataList: setDataList,
-            });
-          }}
-          onMouseDown={(event) => {
-            handleMouseDown({
-              event: event,
-              item: item,
-              datalist: datalist,
-              setDataList: setDataList,
-            });
-          }}
         >
-          <CardActionArea>
+          <CardActionArea
+            onMouseEnter={(event) => {
+              handleMouseEnter({
+                event: event,
+                index: index,
+                item: item,
+                datalist: datalist,
+                setDataList: setDataList,
+              });
+            }}
+            onMouseDown={(event) => {
+              handleMouseDown({
+                event: event,
+                item: item,
+                datalist: datalist,
+                setDataList: setDataList,
+              });
+            }}
+          >
             <CardContent sx={{ pointerEvents: "none" }}>
               <Typography variant="h6" sx={{ pointerEvents: "none" }}>
                 {item}
@@ -183,15 +185,17 @@ const DDList = () => {
         <Card
           sx={{
             marginBottom: "1rem",
-            height: "200px",
-            maxHeight: "250px",
+            height: "150px",
+            border: "5px dashed #ccc;",
+            backgroundColor: "transparent",
+            boxShadow: 0,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <CardContent sx={{ pointerEvents: "none" }}>
-            <Typography variant="h6" sx={{ pointerEvents: "none" }}>
-              Placeholder
-            </Typography>
-          </CardContent>
+          <AddCircleOutlineIcon sx={{ fontSize: "50px", color: "#ccc" }} />
         </Card>
       );
     };
@@ -203,7 +207,7 @@ const DDList = () => {
       <List
         className="glass"
         sx={{
-          minHeight: "260px",
+          minHeight: "250px",
           width: "360px",
           boxShadow: 2,
           display: "flex",
@@ -269,8 +273,6 @@ const DDList = () => {
         setDataList={SetListContainer2}
         key="foo2"
       />
-      {/* <ListComponent datalist={ListContainer2} key='foo2' /> */}
-      {/* <ListComponent datalist={ListContainer2} key='foo2' /> */}
     </div>
   );
 };
