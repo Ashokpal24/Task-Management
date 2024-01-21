@@ -26,7 +26,7 @@ const DDList = () => {
   const [ListContainer2, SetListContainer2] = useState(["Task 4", "Task 5"]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
-  const [isMouseExit, SetMouseExit] = useState(false);
+  // const [isMouseExit, SetMouseExit] = useState(false);
   const isMouseUp = useRef(true);
   const isMouseExited = useRef([true, null, null]);
 
@@ -55,8 +55,7 @@ const DDList = () => {
 
   const handleMouseUp = (event) => {
     isMouseUp.current = true;
-
-    console.log(isMouseExit);
+    // console.log(isMouseExit);
     var ghost = document.getElementById("drag-ghost");
     SetIsDragging(false);
     SetDraggedItem(null);
@@ -99,23 +98,38 @@ const DDList = () => {
   };
 
   const handleMouseEnter = ({ event, index, item, datalist, setDataList }) => {
-    SetMouseExit((preValue) => {
-      const newValue = true;
-      return newValue;
-    });
+    // SetMouseExit((preValue) => {
+    //   const newValue = true;
+    //   return newValue;
+    // });
     isMouseExited.current = [false, draggedItem, setDataList];
-    if (isDragging && draggedItem != item) {
+    if (isDragging && draggedItem != item && index != -1) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       newList.splice(index, 0, draggedItem);
+      setDataList(newList);
+    } else if (isDragging && draggedItem && index == -1) {
+      isMouseExited.current = [false, draggedItem, setDataList];
+      var newList = datalist;
+      newList.push(draggedItem);
       setDataList(newList);
     }
   };
 
-  const handleMouseExit = ({ event, datalist, setDataList }) => {
-    SetMouseExit((preValue) => {
-      const newValue = false;
-      return newValue;
+  const handleMouseMainListEnter = ({ event, datalist, setDataList }) => {
+    handleMouseEnter({
+      event: event,
+      index: -1,
+      item: null,
+      datalist: datalist,
+      setDataList: setDataList,
     });
+  };
+
+  const handleMouseExit = ({ event, datalist, setDataList }) => {
+    // SetMouseExit((preValue) => {
+    //   const newValue = false;
+    //   return newValue;
+    // });
     isMouseExited.current = [true, draggedItem, setDataList];
     if (isDragging) {
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
@@ -206,7 +220,8 @@ const DDList = () => {
       <List
         className="glass"
         sx={{
-          width: 360,
+          minHeight: "200px",
+          width: "360px",
           boxShadow: 2,
           display: "flex",
           flexDirection: "column",
@@ -219,6 +234,13 @@ const DDList = () => {
         }}
         onMouseLeave={(event) => {
           handleMouseExit({
+            event: event,
+            datalist: datalist,
+            setDataList: setDataList,
+          });
+        }}
+        onMouseEnter={(event) => {
+          handleMouseMainListEnter({
             event: event,
             datalist: datalist,
             setDataList: setDataList,
@@ -251,9 +273,6 @@ const DDList = () => {
         justifyContent: "space-evenly",
         alignContent: "first",
       }}
-      // onMouseUp={(event) => {
-      //   handleMouseUp(event);
-      // }}
     >
       <ListComponent
         index={0}
