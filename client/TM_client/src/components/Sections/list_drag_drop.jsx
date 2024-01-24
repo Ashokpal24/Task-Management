@@ -76,11 +76,14 @@ const DDList = () => {
 
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
     isMouseUp.current = false;
-
     const clone = event.target.parentNode.cloneNode(true);
     SetIsDragging(true);
     SetDraggedItem(item);
     event.target.parentNode.remove();
+    event.preventDefault();
+    event.stopPropagation();
+    event.cancelBubble = true;
+    event.returnValue = false;
     clone.querySelectorAll("button").forEach((button) => {
       button.disabled = true;
     });
@@ -98,8 +101,8 @@ const DDList = () => {
   };
 
   const handleMouseEnter = ({ event, index, item, datalist, setDataList }) => {
-    isMouseExited.current = [false, draggedItem, setDataList];
     if (isDragging && draggedItem != item) {
+      isMouseExited.current = [false, draggedItem, setDataList];
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       newList.splice(index, 0, draggedItem);
       setDataList(newList);
@@ -108,16 +111,15 @@ const DDList = () => {
 
   const handleMouseMainListEnter = ({ event, datalist, setDataList }) => {
     if (isDragging && draggedItem && datalist.length == 0) {
-      console.log("yyy");
       isMouseExited.current = [false, draggedItem, setDataList];
-      var newList = [draggedItem];
+      const newList = [draggedItem];
       setDataList(newList);
     }
   };
 
   const handleMouseExit = ({ event, datalist, setDataList }) => {
-    isMouseExited.current = [true, draggedItem, setDataList];
     if (isDragging) {
+      isMouseExited.current = [true, draggedItem, setDataList];
       const newList = datalist.filter((fitem) => fitem !== draggedItem);
       setDataList(newList);
     }
@@ -234,7 +236,11 @@ const DDList = () => {
           });
         }}
       >
-        <Typography marginBottom="1rem" variant="h4">
+        <Typography
+          marginBottom="1rem"
+          variant="h4"
+          sx={{ pointerEvents: "none" }}
+        >
           Stage {index + 1}
         </Typography>
         {datalist.map((item, index) => (
