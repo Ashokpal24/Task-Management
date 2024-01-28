@@ -13,7 +13,7 @@ import {
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
 
-const DDList = () => {
+const DDList2 = () => {
   const [ListContainer1, SetListContainer1] = useState([
     ["Task 1", "Task 2", "Task 3", "Task 8"],
     ["Task 4", "Task 5"],
@@ -21,9 +21,7 @@ const DDList = () => {
 
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
-  // const [isMouseExit, SetMouseExit] = useState(false);
-  // const isMouseUp = useRef(true);
-  // const isMouseExited = useRef([true, null, null]);
+
   const mouseExitedID = useRef(null);
 
   useEffect(() => {
@@ -35,22 +33,7 @@ const DDList = () => {
     };
   });
 
-  // useEffect(() => {
-  //   retainList();
-  // }, [isMouseUp.current, isMouseExited.current]);
-
-  // const retainList = () => {
-  //   const [currStatus, currDragItem, currSetList] = isMouseExited.current;
-  //   if (isMouseUp.current && currStatus && currDragItem) {
-  //     currSetList((prevList) => [
-  //       ...prevList.filter((fitem) => fitem !== currDragItem),
-  //       currDragItem,
-  //     ]);
-  //   }
-  // };
-
   const handleMouseUp = (event) => {
-    // isMouseUp.current = true;
     var ghost = document.getElementById("drag-ghost");
     SetIsDragging(false);
     SetDraggedItem(null);
@@ -61,8 +44,22 @@ const DDList = () => {
 
   const handleMouseMove = (event) => {
     const boxes = document.querySelectorAll(".list-container");
+    const cards = document.querySelectorAll(".card-container");
     const mouseX = event.clientX;
     const mouseY = event.clientY;
+
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+
+      if (
+        mouseX >= rect.left &&
+        mouseX <= rect.right &&
+        mouseY >= rect.top &&
+        mouseY <= rect.bottom &&
+        draggedItem
+      )
+        console.log(card.id);
+    });
 
     boxes.forEach((box) => {
       const rect = box.getBoundingClientRect();
@@ -76,7 +73,7 @@ const DDList = () => {
         draggedItem
       ) {
         mouseExitedID.current = box.id;
-        console.log(`Mouse over ${mouseExitedID.current}`);
+        // console.log(`Mouse over ${mouseExitedID.current}`);
         var newList = [];
         const tempList = [...ListContainer1];
         const mainIndex = box.id.replace(/[^\d.]/g, "");
@@ -95,10 +92,11 @@ const DDList = () => {
             newList.push([...listItem]);
           }
         });
-        console.log(newList);
+        // console.log(newList);
         SetListContainer1(newList);
       }
     });
+
     if (isDragging) {
       var ghost = document.getElementById("drag-ghost");
       if (ghost) {
@@ -109,7 +107,6 @@ const DDList = () => {
   };
 
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
-    // isMouseUp.current = false;
     const clone = event.target.parentNode.cloneNode(true);
     SetIsDragging(true);
     SetDraggedItem(item);
@@ -121,7 +118,8 @@ const DDList = () => {
     clone.querySelectorAll("button").forEach((button) => {
       button.disabled = true;
     });
-
+    clone.classList.remove("card-container");
+    clone.class = "ghost-container";
     clone.id = "drag-ghost";
     clone.style.position = "absolute";
     clone.style.left = `${event.pageX}px`;
@@ -134,65 +132,6 @@ const DDList = () => {
     document.body.appendChild(clone);
   };
 
-  // const handleMouseEnter = ({
-  //   event,
-  //   mainIndex,
-  //   index,
-  //   item,
-  //   datalist,
-  //   setDataList,
-  // }) => {
-  //   if (isDragging && draggedItem != item) {
-  //     // isMouseExited.current = [false, draggedItem, setDataList];
-  //     const addToList = datalist.filter((fitem) => fitem !== draggedItem);
-  //     addToList.splice(index, 0, draggedItem);
-
-  //     var newList = [];
-  //     const tempList = [...ListContainer1];
-  //     tempList.forEach((listItem, index) => {
-  //       if (listItem.includes(draggedItem)) {
-  //         const modifiedList = [...listItem];
-  //         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
-  //         newList.push(modifiedList);
-  //       } else if (index == mainIndex) {
-  //         newList.push([...addToList]);
-  //       } else {
-  //         newList.push([...listItem]);
-  //       }
-  //     });
-  //     setDataList(newList);
-  //   }
-  // };
-
-  // const handleMouseMainListEnter = ({
-  //   event,
-  //   index,
-  //   datalist,
-  //   setDataList,
-  // }) => {
-  //   if (isDragging && draggedItem && datalist.length == 0) {
-  //     // isMouseExited.current = [false, draggedItem, setDataList];
-  //     const newList = [draggedItem];
-  //     setDataList((prev) => {
-  //       const updatedList = [...prev];
-  //       updatedList[index] = newList;
-  //       return updatedList;
-  //     });
-  //   }
-  // };
-
-  // const handleMouseExit = ({ event, datalist, setDataList, index }) => {
-  //   if (isDragging) {
-  //     isMouseExited.current = [true, draggedItem, setDataList];
-  //     const newList = datalist.filter((fitem) => fitem !== draggedItem);
-  //     setDataList((prev) => {
-  //       const updatedList = [...prev];
-  //       updatedList[index] = newList;
-  //       return updatedList;
-  //     });
-  //   }
-  // };
-
   const CardComponent = ({
     index,
     mainIndex,
@@ -204,21 +143,13 @@ const DDList = () => {
     const CardContainer = () => {
       return (
         <Card
+          className="card-container"
+          id={`M${mainIndex}C${index}`}
           sx={{
             marginBottom: "1rem",
           }}
         >
           <CardActionArea
-            // onMouseEnter={(event) => {
-            //   handleMouseEnter({
-            //     event: event,
-            //     mainIndex: mainIndex,
-            //     index: index,
-            //     item: item,
-            //     datalist: datalist,
-            //     setDataList: setDataList,
-            //   });
-            // }}
             onMouseDown={(event) => {
               handleMouseDown({
                 event: event,
@@ -274,11 +205,11 @@ const DDList = () => {
     return <>{setPlaceholder ? <Placeholder /> : <CardContainer />}</>;
   };
 
-  const ListComponent = ({ index, datalist, setDataList }) => {
+  const ListComponent = ({ mainIndex, datalist, setDataList }) => {
     return (
       <List
         className="glass list-container"
-        id={"f" + index}
+        id={"f" + mainIndex}
         sx={{
           minHeight: "250px",
           width: "360px",
@@ -292,34 +223,18 @@ const DDList = () => {
           borderTop: "5px solid",
           borderImage: "linear-gradient(90deg, blue, red, orange) 1",
         }}
-        // onMouseLeave={(event) => {
-        //   handleMouseExit({
-        //     event: event,
-        //     datalist: datalist,
-        //     setDataList: setDataList,
-        //     index: index,
-        //   });
-        // }}
-        // onMouseEnter={(event) => {
-        //   handleMouseMainListEnter({
-        //     event: event,
-        //     index: index,
-        //     datalist: datalist,
-        //     setDataList: setDataList,
-        //   });
-        // }}
       >
         <Typography
           marginBottom="1rem"
           variant="h4"
           sx={{ pointerEvents: "none" }}
         >
-          Stage {index + 1}
+          Stage {mainIndex + 1}
         </Typography>
         {datalist.map((item, index) => (
           <CardComponent
             key={item}
-            mainIndex={index}
+            mainIndex={mainIndex}
             index={index}
             item={item}
             datalist={datalist}
@@ -342,13 +257,13 @@ const DDList = () => {
       }}
     >
       <ListComponent
-        index={0}
+        mainIndex={0}
         datalist={ListContainer1[0]}
         setDataList={SetListContainer1}
         key="foo1"
       />
       <ListComponent
-        index={1}
+        mainIndex={1}
         datalist={ListContainer1[1]}
         setDataList={SetListContainer1}
         key="foo2"
@@ -356,4 +271,4 @@ const DDList = () => {
     </div>
   );
 };
-export default DDList;
+export default DDList2;

@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import AuthPage from "./components/Auth/authPage";
 import TestPage from "./components/Sections/test.jsx";
 import DDlist from "./components/Sections/list_drag_drop.jsx";
+import DDlist2 from "./components/Sections/list_drag_drop v2.jsx";
+
 import "../static/index.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -33,7 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<AuthPage isSigned={true} />} />
         <Route path="/register" element={<AuthPage isSigned={false} />} />
         <Route path="/test" Component={TestPage} />
-        <Route path="/list" Component={DDlist} />
+        <Route path="/list" Component={DDlist2} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
