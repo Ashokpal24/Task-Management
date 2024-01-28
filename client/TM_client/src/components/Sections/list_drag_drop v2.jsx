@@ -72,38 +72,39 @@ const DDList2 = () => {
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-
-      if (
-        mouseX >= rect.left &&
-        mouseX <= rect.right &&
-        mouseY >= rect.top &&
-        mouseY <= rect.bottom &&
-        draggedItem &&
-        card.id !== mouseEnterID.current
-      ) {
-        mouseEnterID.current = card.id;
-        console.log(card.id);
-        const extractedIndex = card.id.match(/\d+/g).map(Number);
-        updateList({ indexes: extractedIndex });
-      }
-    });
-
-    // boxes.forEach((box) => {
-    //   const rect = box.getBoundingClientRect();
+    // cards.forEach((card) => {
+    //   const rect = card.getBoundingClientRect();
 
     //   if (
     //     mouseX >= rect.left &&
     //     mouseX <= rect.right &&
     //     mouseY >= rect.top &&
     //     mouseY <= rect.bottom &&
-    //     box.id != mouseEnterID.current &&
-    //     draggedItem
+    //     draggedItem &&
+    //     card.id !== mouseEnterID.current
     //   ) {
-    //     mouseEnterID.current = box.id;
+    //     mouseEnterID.current = card.id;
+    //     const extractedIndex = card.id.match(/\d+/g).map(Number);
+    //     updateList({ indexes: extractedIndex });
     //   }
     // });
+
+    boxes.forEach((box) => {
+      const rect = box.getBoundingClientRect();
+
+      if (
+        mouseX >= rect.left &&
+        mouseX <= rect.right &&
+        mouseY >= rect.top &&
+        mouseY <= rect.bottom &&
+        box.id != mouseEnterID.current &&
+        draggedItem
+      ) {
+        mouseEnterID.current = box.id;
+        const extractedIndex = box.id.match(/\d+/g).map(Number);
+        updateList({ indexes: extractedIndex });
+      }
+    });
 
     if (isDragging) {
       var ghost = document.getElementById("drag-ghost");
