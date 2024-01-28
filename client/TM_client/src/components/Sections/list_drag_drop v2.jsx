@@ -7,6 +7,7 @@ import {
   CardContent,
   CardActions,
   Button,
+  cardClasses,
   // Box,
   // Grid,
 } from "@mui/material";
@@ -22,7 +23,7 @@ const DDList2 = () => {
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
 
-  const mouseExitedID = useRef(null);
+  const mouseEnterID = useRef(null);
 
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);
@@ -42,6 +43,29 @@ const DDList2 = () => {
     }
   };
 
+  const updateList = ({ indexes }) => {
+    var newList = [];
+    const tempList = [...ListContainer1];
+    const mainIndex = indexes[0];
+
+    const datalist = tempList[parseInt(mainIndex)];
+    const addToList = datalist.filter((fitem) => fitem !== draggedItem);
+    addToList.splice(0, 0, draggedItem);
+
+    tempList.forEach((listItem, index) => {
+      if (listItem.includes(draggedItem)) {
+        const modifiedList = [...listItem];
+        modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
+        newList.push(modifiedList);
+      } else if (index == mainIndex) {
+        newList.push([...addToList]);
+      } else {
+        newList.push([...listItem]);
+      }
+    });
+    SetListContainer1(newList);
+  };
+
   const handleMouseMove = (event) => {
     const boxes = document.querySelectorAll(".list-container");
     const cards = document.querySelectorAll(".card-container");
@@ -56,46 +80,30 @@ const DDList2 = () => {
         mouseX <= rect.right &&
         mouseY >= rect.top &&
         mouseY <= rect.bottom &&
-        draggedItem
-      )
-        console.log(card.id);
-    });
-
-    boxes.forEach((box) => {
-      const rect = box.getBoundingClientRect();
-
-      if (
-        mouseX >= rect.left &&
-        mouseX <= rect.right &&
-        mouseY >= rect.top &&
-        mouseY <= rect.bottom &&
-        box.id != mouseExitedID.current &&
-        draggedItem
+        draggedItem &&
+        card.id !== mouseEnterID.current
       ) {
-        mouseExitedID.current = box.id;
-        // console.log(`Mouse over ${mouseExitedID.current}`);
-        var newList = [];
-        const tempList = [...ListContainer1];
-        const mainIndex = box.id.replace(/[^\d.]/g, "");
-        const datalist = tempList[parseInt(mainIndex)];
-        const addToList = datalist.filter((fitem) => fitem !== draggedItem);
-        addToList.splice(0, 0, draggedItem);
-
-        tempList.forEach((listItem, index) => {
-          if (listItem.includes(draggedItem)) {
-            const modifiedList = [...listItem];
-            modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
-            newList.push(modifiedList);
-          } else if (index == mainIndex) {
-            newList.push([...addToList]);
-          } else {
-            newList.push([...listItem]);
-          }
-        });
-        // console.log(newList);
-        SetListContainer1(newList);
+        mouseEnterID.current = card.id;
+        console.log(card.id);
+        const extractedIndex = card.id.match(/\d+/g).map(Number);
+        updateList({ indexes: extractedIndex });
       }
     });
+
+    // boxes.forEach((box) => {
+    //   const rect = box.getBoundingClientRect();
+
+    //   if (
+    //     mouseX >= rect.left &&
+    //     mouseX <= rect.right &&
+    //     mouseY >= rect.top &&
+    //     mouseY <= rect.bottom &&
+    //     box.id != mouseEnterID.current &&
+    //     draggedItem
+    //   ) {
+    //     mouseEnterID.current = box.id;
+    //   }
+    // });
 
     if (isDragging) {
       var ghost = document.getElementById("drag-ghost");
