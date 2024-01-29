@@ -48,18 +48,29 @@ const DDList2 = () => {
     const tempList = [...ListContainer1];
     const mainIndex = indexes[0];
 
-    const datalist = tempList[parseInt(mainIndex)];
-    const addToList = datalist.filter((fitem) => fitem !== draggedItem);
-    addToList.splice(0, 0, draggedItem);
-
     tempList.forEach((listItem, index) => {
-      if (listItem.includes(draggedItem)) {
+      console.log(index);
+      if (listItem.includes(draggedItem) && index != mainIndex) {
+        console.log("cond 1");
         const modifiedList = [...listItem];
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         newList.push(modifiedList);
-      } else if (index == mainIndex) {
-        newList.push([...addToList]);
+      } else if (listItem.includes(draggedItem) && index == mainIndex) {
+        console.log("cond 2");
+        const modifiedList = [...listItem];
+        modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
+        modifiedList.splice(indexes[1], 0, draggedItem);
+        newList.push(modifiedList);
+      } else if (
+        listItem.includes(draggedItem) == false &&
+        index == mainIndex
+      ) {
+        console.log("cond 3");
+        const modifiedList = [...listItem];
+        modifiedList.splice(indexes[1], 0, draggedItem);
+        newList.push(modifiedList);
       } else {
+        console.log("cond 4");
         newList.push([...listItem]);
       }
     });
@@ -72,36 +83,19 @@ const DDList2 = () => {
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
-    // cards.forEach((card) => {
-    //   const rect = card.getBoundingClientRect();
-
-    //   if (
-    //     mouseX >= rect.left &&
-    //     mouseX <= rect.right &&
-    //     mouseY >= rect.top &&
-    //     mouseY <= rect.bottom &&
-    //     draggedItem &&
-    //     card.id !== mouseEnterID.current
-    //   ) {
-    //     mouseEnterID.current = card.id;
-    //     const extractedIndex = card.id.match(/\d+/g).map(Number);
-    //     updateList({ indexes: extractedIndex });
-    //   }
-    // });
-
-    boxes.forEach((box) => {
-      const rect = box.getBoundingClientRect();
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
 
       if (
         mouseX >= rect.left &&
         mouseX <= rect.right &&
         mouseY >= rect.top &&
         mouseY <= rect.bottom &&
-        box.id != mouseEnterID.current &&
-        draggedItem
+        draggedItem &&
+        card.id !== mouseEnterID.current
       ) {
-        mouseEnterID.current = box.id;
-        const extractedIndex = box.id.match(/\d+/g).map(Number);
+        mouseEnterID.current = card.id;
+        const extractedIndex = card.id.match(/\d+/g).map(Number);
         updateList({ indexes: extractedIndex });
       }
     });
