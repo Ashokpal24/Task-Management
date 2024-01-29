@@ -16,8 +16,10 @@ import "./style.css";
 
 const DDList2 = () => {
   const [ListContainer1, SetListContainer1] = useState([
-    ["Task 1", "Task 2", "Task 3", "Task 8"],
+    ["Task 1", "Task 2", "Task 3"],
     ["Task 4", "Task 5"],
+    ["Task 6", "Task 7"],
+    ["Task 8", "Task 9"],
   ]);
 
   const [isDragging, SetIsDragging] = useState(false);
@@ -259,18 +261,14 @@ const DDList2 = () => {
         alignContent: "first",
       }}
     >
-      <ListComponent
-        mainIndex={0}
-        datalist={ListContainer1[0]}
-        setDataList={SetListContainer1}
-        key="foo1"
-      />
-      <ListComponent
-        mainIndex={1}
-        datalist={ListContainer1[1]}
-        setDataList={SetListContainer1}
-        key="foo2"
-      />
+      {ListContainer1.map((list, index) => (
+        <ListComponent
+          mainIndex={index}
+          datalist={list}
+          setDataList={SetListContainer1}
+          key={"foo" + index}
+        />
+      ))}
     </div>
   );
 };
