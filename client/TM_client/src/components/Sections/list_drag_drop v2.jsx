@@ -18,8 +18,8 @@ const DDList2 = () => {
   const [ListContainer1, SetListContainer1] = useState([
     ["Task 1", "Task 2", "Task 3"],
     ["Task 4", "Task 5"],
-    ["Task 6", "Task 7"],
-    ["Task 8", "Task 9"],
+    // ["Task 6", "Task 7"],
+    // ["Task 8", "Task 9"],
   ]);
 
   const [isDragging, SetIsDragging] = useState(false);
@@ -51,14 +51,14 @@ const DDList2 = () => {
     const mainIndex = indexes[0];
 
     tempList.forEach((listItem, index) => {
-      console.log(index);
+      // console.log(index);
       if (listItem.includes(draggedItem) && index != mainIndex) {
-        console.log("cond 1");
+        // console.log("cond 1");
         const modifiedList = [...listItem];
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         newList.push(modifiedList);
       } else if (listItem.includes(draggedItem) && index == mainIndex) {
-        console.log("cond 2");
+        // console.log("cond 2");
         const modifiedList = [...listItem];
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         modifiedList.splice(indexes[1], 0, draggedItem);
@@ -72,7 +72,7 @@ const DDList2 = () => {
         modifiedList.splice(indexes[1], 0, draggedItem);
         newList.push(modifiedList);
       } else {
-        console.log("cond 4");
+        // console.log("cond 4");
         newList.push([...listItem]);
       }
     });
@@ -99,6 +99,24 @@ const DDList2 = () => {
         mouseEnterID.current = card.id;
         const extractedIndex = card.id.match(/\d+/g).map(Number);
         updateList({ indexes: extractedIndex });
+      }
+    });
+
+    boxes.forEach((box) => {
+      const rect = box.getBoundingClientRect();
+
+      if (
+        mouseX >= rect.left &&
+        mouseX <= rect.right &&
+        mouseY >= rect.top &&
+        mouseY <= rect.bottom &&
+        draggedItem &&
+        box.id !== mouseEnterID.current
+      ) {
+        mouseEnterID.current = box.id;
+        const extractedIndex = box.id.match(/\d+/g).map(Number);
+        if (ListContainer1[extractedIndex[0]].length == 0)
+          updateList({ indexes: extractedIndex });
       }
     });
 
