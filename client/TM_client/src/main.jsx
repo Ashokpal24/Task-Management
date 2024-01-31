@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import AuthPage from "./components/Auth/authPage";
 import TestPage from "./components/Sections/test.jsx";
 import DDlist from "./components/Sections/list_drag_drop.jsx";
-import DDlist2 from "./components/Sections/list_drag_drop v2.jsx";
+import DDlist2 from "./components/Sections/DnD/list_drag_drop v2.jsx";
 
 import "../static/index.css";
 
