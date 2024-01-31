@@ -1,9 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 
-const loginURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/login/'
-const registerURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/register/'
-const projectListURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/project/'
-const taskListURL = 'https://fuzzy-rotary-phone-674p77v5gqr2xpv-8000.app.github.dev/task/'
+const loginURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/login/'
+const registerURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/register/'
+const projectListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/project/'
+const taskListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
 
 const saveJWTToken = ({ accessToken, refreshToken }) => {
 

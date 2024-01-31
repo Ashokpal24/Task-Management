@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CORS_ORIGIN_WHITELIST = [
-    'https://fuzzy-rotary-phone-674p77v5gqr2xpv-5173.app.github.dev'
+    'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-5173.app.github.dev'
 ]
 
 # Application definition
