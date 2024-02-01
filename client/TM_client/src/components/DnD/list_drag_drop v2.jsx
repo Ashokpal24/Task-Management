@@ -17,6 +17,8 @@ import "./style.css";
 // ["Task 8", "Task 9"],
 
 const DnDComponent = ({ listData }) => {
+  var listSections = ["New Task", "In Progress", "Quality Check", "Completed"]
+
   const [ListContainer1, SetListContainer1] = useState(listData ? listData : [[
     ["Task 1", "Task 2", "Task 3"],
     ["Task 4", "Task 5"],
@@ -231,7 +233,7 @@ const DnDComponent = ({ listData }) => {
     return <>{setPlaceholder ? <Placeholder /> : <CardContainer />}</>;
   };
 
-  const ListComponent = ({ mainIndex, datalist, setDataList }) => {
+  const ListComponent = ({ mainIndex, label, datalist, setDataList }) => {
     return (
       <List
         className="glass list-container"
@@ -257,7 +259,7 @@ const DnDComponent = ({ listData }) => {
           variant="h6"
           sx={{ pointerEvents: "none" }}
         >
-          Stage {mainIndex + 1}
+          {label}
         </Typography>
         {datalist.map((item, index) => (
           <CardComponent
@@ -284,12 +286,13 @@ const DnDComponent = ({ listData }) => {
         alignContent: "first",
       }}
     >
-      {ListContainer1.map((list, index) => (
+      {listSections.map((label, index) => (
         <ListComponent
-          mainIndex={index}
-          datalist={list}
-          setDataList={SetListContainer1}
           key={"foo" + index}
+          mainIndex={index}
+          label={label}
+          datalist={ListContainer1[index]}
+          setDataList={SetListContainer1}
         />
       ))}
     </div>

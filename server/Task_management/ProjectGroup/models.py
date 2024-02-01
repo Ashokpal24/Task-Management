@@ -17,7 +17,9 @@ class ProjectGroup(models.Model):
         User,
         on_delete=models.SET_NULL,
         verbose_name="User ID",
-        null=True)
+        null=True,
+        related_name='user_list'
+    )
 
     created_at = models.DateTimeField(
         verbose_name="Created At",

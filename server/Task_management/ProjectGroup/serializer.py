@@ -1,6 +1,6 @@
+from User.serializer import UserProfileSerializer
 from rest_framework import serializers
 from .models import (ProjectGroup, ProjectMembership)
-from User.serializer import UserProfileSerializer
 from Task.serializer import TaskDetailedSerializer
 
 
@@ -11,7 +11,9 @@ class ProjectListSerializer(serializers.ModelSerializer):
 
 
 class ProjectDetailedSerializer(serializers.ModelSerializer):
-    task=TaskDetailedSerializer(source='task_list',many=True,read_only=True)
+    task = TaskDetailedSerializer(
+        source='task_list', many=True, read_only=True)
+
     class Meta:
         model = ProjectGroup
         fields = ["id",
@@ -23,7 +25,7 @@ class ProjectDetailedSerializer(serializers.ModelSerializer):
                   "updated_at"]
 
         read_only_fields = ['id',
-                            'task',  
+                            'task',
                             'created_at',
                             'updated_at']
 
@@ -69,7 +71,7 @@ class MemberListforProjectSerializer(serializers.ModelSerializer):
                             'created_at',
                             'updated_at']
 
-
+# -----
 # class ProjectListforMemberSerializer(serializers.ModelSerializer):
 #     project_list = ProjectListSerializer(many=True, read_only=True)
 

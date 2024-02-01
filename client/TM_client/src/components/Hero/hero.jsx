@@ -9,7 +9,6 @@ import LogoutRounded from '@mui/icons-material/LogoutRounded';
 import CircularProgress from '@mui/material/CircularProgress';
 import DnDComponent from '../DnD/list_drag_drop v2.jsx';
 import Avatar from '@mui/material/Avatar';
-
 import "../../../static/index.css";
 
 import {
@@ -24,6 +23,7 @@ import {
 
 const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
+    const [projectList, SetProjectList] = useState([])
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -102,7 +102,9 @@ const HeroPage = () => {
             </AppBar>
             <DnDComponent listData={[
                 ["Item 1", "Item 2"],
-                ["Item 3", "Item 4", "Item 5"]
+                ["Item 3", "Item 4", "Item 5"],
+                [],
+                []
             ]} />
         </Box>
 
