@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/system/Box';
+import Button from '@mui/material/Button';
+import { pink } from '@mui/material/colors';
+import LogoutRounded from '@mui/icons-material/LogoutRounded';
 import CircularProgress from '@mui/material/CircularProgress';
+import "../../../static/index.css";
 
 import {
     loadJWTToken,
@@ -38,28 +44,57 @@ const HeroPage = () => {
         justifyContent: "center",
         alignItems: "center"
     }}><CircularProgress /></div>) : (
-        <AppBar sx={{
-            boxShadow: 2,
-            position: 'static',
-            padding: '10px',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-        }} >
-            <Typography variant='h6'>Task management app 🧑‍💼</Typography>
-            <Button
-                color='error'
-                type="button"
-                variant="contained"
-                onClick={() => {
-                    deleteJWTToken()
-                    navigateTo('/login')
-                }}
-            >
-                Logout
-            </Button>
-        </AppBar>
+        <Box
+            className="background-gradient2"
+            sx={{
+                width: "100%",
+                height: "100vh",
+                margin: "0px",
+                padding: "0px"
+
+            }}
+
+        >
+            <AppBar
+                sx={{
+                    boxShadow: 1,
+                    position: 'static',
+                    padding: '10px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    backgroundColor: "rgba(255, 255, 255, 0.845)",
+                    color: "black"
+                }} >
+                <Typography
+
+                    sx={{
+                        color: "grey",
+                        marginLeft: "2rem"
+                    }}
+                    variant='h6'
+                >
+                    🗒️ Task management
+                </Typography>
+                <LogoutRounded
+                    className="pink-tone"
+                    sx={{
+                        borderRadius: "5px",
+                        width: "50px",
+                        color: "grey",
+                        marginRight: "2rem",
+                        fontSize: 40
+
+                    }}
+                    onClick={() => {
+                        deleteJWTToken()
+                        navigateTo('/login')
+                    }}
+                />
+            </AppBar>
+        </Box>
+
     )
 }
 
