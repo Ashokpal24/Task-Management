@@ -7,19 +7,20 @@ import {
   CardContent,
   CardActions,
   Button,
-  // Box,
-  // Grid,
+
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
+// Test
+// 
+// ["Task 6", "Task 7"],
+// ["Task 8", "Task 9"],
 
-const DDList2 = () => {
-  const [ListContainer1, SetListContainer1] = useState([
+const DnDComponent = ({ listData }) => {
+  const [ListContainer1, SetListContainer1] = useState(listData ? listData : [[
     ["Task 1", "Task 2", "Task 3"],
     ["Task 4", "Task 5"],
-    // ["Task 6", "Task 7"],
-    // ["Task 8", "Task 9"],
-  ]);
+  ]]);
 
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
@@ -147,7 +148,7 @@ const DDList2 = () => {
     clone.style.left = `${event.pageX}px`;
     clone.style.top = `${event.pageY}px`;
     clone.style.transform = "translate(-10%,-10%)";
-    clone.style.width = "360px";
+    clone.style.width = "250px";
     clone.style.rotate = "5deg";
     clone.style.pointerEvents = "none";
     clone.style.zIndex = 100;
@@ -182,13 +183,13 @@ const DDList2 = () => {
             }}
           >
             <CardContent sx={{ pointerEvents: "none" }}>
-              <Typography variant="h6" sx={{ pointerEvents: "none" }}>
+              <Typography sx={{ pointerEvents: "none", fontSize: "16px", marginBottom: "0.2rem" }}>
                 {item}
               </Typography>
               <Typography
                 variant="body2"
-                color="text.secondary"
-                sx={{ pointerEvents: "none" }}
+                // color="text.secondary"
+                sx={{ pointerEvents: "none", fontSize: "12px", fontWeight: "300" }}
               >
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste
                 cum totam non aliquid omnis quaerat rem dolore voluptatibus eius
@@ -197,7 +198,10 @@ const DDList2 = () => {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary">
+            <Button color="primary" sx={{
+              fontSize: "10px",
+              fontWeight: "500"
+            }}>
               Comments
             </Button>
           </CardActions>
@@ -233,22 +237,24 @@ const DDList2 = () => {
         className="glass list-container"
         id={"f" + mainIndex}
         sx={{
-          minHeight: "250px",
-          width: "360px",
+          minHeight: "200px",
+          width: "250px",
           boxShadow: 2,
           display: "flex",
           flexDirection: "column",
           justifyContent: "first",
           alignSelf: "flex-start",
-          padding: "1rem",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+          paddingBottom: "0.5rem",
           borderEndEndRadius: ".2rem",
           borderTop: "5px solid",
-          borderImage: "linear-gradient(90deg, blue, red, orange) 1",
+          borderImage: "linear-gradient(41deg, rgba(252,101,182,1) 0% , rgba(96,164,249,1) 100%) 1",
         }}
       >
         <Typography
           marginBottom="1rem"
-          variant="h4"
+          variant="h6"
           sx={{ pointerEvents: "none" }}
         >
           Stage {mainIndex + 1}
@@ -289,4 +295,4 @@ const DDList2 = () => {
     </div>
   );
 };
-export default DDList2;
+export default DnDComponent;

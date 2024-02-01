@@ -7,6 +7,9 @@ import Button from '@mui/material/Button';
 import { pink } from '@mui/material/colors';
 import LogoutRounded from '@mui/icons-material/LogoutRounded';
 import CircularProgress from '@mui/material/CircularProgress';
+import DnDComponent from '../DnD/list_drag_drop v2.jsx';
+import Avatar from '@mui/material/Avatar';
+
 import "../../../static/index.css";
 
 import {
@@ -48,7 +51,7 @@ const HeroPage = () => {
             className="background-gradient2"
             sx={{
                 width: "100%",
-                height: "100vh",
+                minHeight: "100vh",
                 margin: "0px",
                 padding: "0px"
 
@@ -65,13 +68,16 @@ const HeroPage = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     backgroundColor: "rgba(255, 255, 255, 0.845)",
-                    color: "black"
+                    color: "black",
+                    marginBottom: "1rem"
                 }} >
                 <Typography
 
                     sx={{
                         color: "grey",
-                        marginLeft: "2rem"
+                        marginLeft: "2rem",
+                        cursor: "pointer"
+
                     }}
                     variant='h6'
                 >
@@ -84,7 +90,8 @@ const HeroPage = () => {
                         width: "50px",
                         color: "grey",
                         marginRight: "2rem",
-                        fontSize: 40
+                        fontSize: 30,
+                        cursor: "pointer"
 
                     }}
                     onClick={() => {
@@ -93,7 +100,12 @@ const HeroPage = () => {
                     }}
                 />
             </AppBar>
+            <DnDComponent listData={[
+                ["Item 1", "Item 2"],
+                ["Item 3", "Item 4", "Item 5"]
+            ]} />
         </Box>
+
 
     )
 }
