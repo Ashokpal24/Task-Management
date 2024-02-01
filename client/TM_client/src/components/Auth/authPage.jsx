@@ -14,7 +14,7 @@ const AuthPage = ({ isSigned }) => {
     const navigateTo = useNavigate()
 
     useEffect(() => {
-        if (isAuthorized) navigateTo('/list')
+        if (isAuthorized) navigateTo('/hero')
     }, [isAuthorized])
 
     useEffect(() => {

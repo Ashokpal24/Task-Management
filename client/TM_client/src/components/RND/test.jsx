@@ -4,7 +4,6 @@ import Button from '@mui/material/Button'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
@@ -19,77 +18,10 @@ import {
     checkExpiration,
     projectListURL,
     taskListURL,
+    getDataList,
+    getDataItem
 } from '../utils.jsx'
 
-const getProjectList = async ({ token, setProjectList }) => {
-    try {
-        const response = await fetch(projectListURL, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token.accessToken
-            },
-        })
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(errorData)
-        }
-        const data = await response.json();
-        setProjectList(data)
-    }
-    catch (error) {
-        console.error("An error occurred during retriving of data:", error);
-    }
-}
-
-
-
-const getTaskList = async ({ token, setTaskList }) => {
-    try {
-        const response = await fetch(taskListURL, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token.accessToken
-            },
-        })
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(errorData)
-        }
-        const data = await response.json();
-        setTaskList(data)
-    }
-    catch (error) {
-        console.error("An error occurred during retriving of data:", error);
-    }
-}
-
-const getTaskItem = async ({ token, taskId, setTaskItem }) => {
-    const taskItemURL = taskListURL + taskId
-    console.log(taskItemURL)
-    try {
-        const response = await fetch(taskItemURL, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token.accessToken
-            },
-        })
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error(errorData)
-        }
-        const data = await response.json();
-        let new_data = []
-        new_data.push(data)
-        console.log(data)
-        setTaskItem(new_data)
-    }
-    catch (error) {
-        console.error("An error occurred during retriving of data:", error);
-    }
-}
 
 const TestPage = () => {
     const [canRender, SetCanRender] = useState(false)
@@ -103,9 +35,6 @@ const TestPage = () => {
 
 
     useEffect(() => {
-        getProjectList({ token: token, setProjectList: SetProjectList })
-        getTaskList({ token: token, setTaskList: SetTaskList })
-
         if (token == null) {
             navigateTo('/login')
             return
@@ -114,6 +43,8 @@ const TestPage = () => {
             navigateTo('/login')
             return
         }
+        getDataList({ token: token, setList: SetProjectList, URL: projectListURL })
+        getDataList({ token: token, setList: SetTaskList, URL: taskListURL })
         SetCanRender(true)
     }, [])
 
@@ -171,7 +102,7 @@ const TestPage = () => {
                             {taskList.map((item, index) => (
                                 <ListItem disablePadding key={item.id} >
                                     <ListItemButton
-                                        onClick={() => getTaskItem({ token: token, taskId: item.id, setTaskItem: SetTaskItem })
+                                        onClick={() => getDataItem({ token: token, setItem: SetTaskItem, URL: taskListURL, Id: item.id })
                                         }>
                                         <ListItemText>
                                             {item.title}

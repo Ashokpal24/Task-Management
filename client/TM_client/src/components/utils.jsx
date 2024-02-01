@@ -4,6 +4,8 @@ const loginURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.githu
 const registerURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/register/'
 const projectListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/project/'
 const taskListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
+const subtaskListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
+
 
 const saveJWTToken = ({ accessToken, refreshToken }) => {
 
@@ -33,6 +35,63 @@ const checkExpiration = (accessToken) => {
     return true
 }
 
+const getDataList = async ({ token, setList, URL }) => {
+    try {
+        const response = await fetch(URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token.accessToken
+            },
+        })
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error(errorData)
+        }
+        const data = await response.json();
+        setList(data)
+    }
+    catch (error) {
+        console.error("An error occurred during retriving of data:", error);
+    }
+}
 
-export { saveJWTToken, loadJWTToken, deleteJWTToken, checkExpiration, loginURL, registerURL, projectListURL, taskListURL }
+
+const getDataItem = async ({ token, setItem, URL, Id }) => {
+    const ItemURL = URL + Id
+    try {
+        const response = await fetch(ItemURL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token.accessToken
+            },
+        })
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error(errorData)
+        }
+        const data = await response.json();
+        let new_data = []
+        new_data.push(data)
+        console.log(data)
+        setItem(new_data)
+    }
+    catch (error) {
+        console.error("An error occurred during retriving of data:", error);
+    }
+}
+
+export {
+    saveJWTToken,
+    loadJWTToken,
+    deleteJWTToken,
+    checkExpiration,
+    getDataList,
+    getDataItem,
+    loginURL,
+    registerURL,
+    projectListURL,
+    taskListURL
+}
 
