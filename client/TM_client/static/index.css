@@ -4,6 +4,9 @@ body {
   margin: 0%;
 
 }
+::-webkit-scrollbar{
+  display: none;
+}
 .glass {
   backdrop-filter: blur(7.5px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -11,7 +14,7 @@ body {
 }
 .background-gradient1{
   background: #ff97ce;
-  background: linear-gradient(90deg, rgba(255,151,206,1) 0%, rgba(148,187,233,1) 100%);
+  background: linear-gradient(90deg, rgba(255,151,206,1) 0%, #94bbe9 100%);
 }
 
 .background-gradient2{
@@ -19,6 +22,6 @@ body {
   background: linear-gradient(41deg, rgba(255,240,248,1) 0%, rgba(210,230,255,1) 100%); 
 }
 .pink-tone:hover{
-  color:#e25ca3 ;
+  color:#589ae5 ;
   transition:0.2s
 }

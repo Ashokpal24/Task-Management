@@ -1,10 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 
+const profileURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/profile/'
 const loginURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/login/'
 const registerURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/register/'
-const projectListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/project/'
-const taskListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
-const subtaskListURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
+const projectURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/project/'
+const taskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
+const subtaskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
 
 
 const saveJWTToken = ({ accessToken, refreshToken }) => {
@@ -74,7 +75,7 @@ const getDataItem = async ({ token, setItem, URL, Id }) => {
         const data = await response.json();
         let new_data = []
         new_data.push(data)
-        console.log(data)
+        // console.log(data)
         setItem(new_data)
     }
     catch (error) {
@@ -91,7 +92,9 @@ export {
     getDataItem,
     loginURL,
     registerURL,
-    projectListURL,
-    taskListURL
+    profileURL,
+    projectURL,
+    taskURL,
+    subtaskURL
 }
 

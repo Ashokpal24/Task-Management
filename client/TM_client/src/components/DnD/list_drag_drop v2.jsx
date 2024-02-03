@@ -19,15 +19,16 @@ import "./style.css";
 const DnDComponent = ({ listData }) => {
   var listSections = ["New Task", "In Progress", "Quality Check", "Completed"]
 
-  const [ListContainer1, SetListContainer1] = useState(listData ? listData : [[
-    ["Task 1", "Task 2", "Task 3"],
-    ["Task 4", "Task 5"],
-  ]]);
+  const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
 
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
 
   const mouseEnterID = useRef(null);
+
+  useEffect(() => {
+    SetListContainer1(listData);
+  }, [listData]);
 
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);

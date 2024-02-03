@@ -15,15 +15,18 @@ import {
     loadJWTToken,
     deleteJWTToken,
     checkExpiration,
-    projectListURL,
-    taskListURL,
+    profileURL,
+    projectURL,
+    taskURL,
+    subtaskURL,
     getDataList,
     getDataItem
 } from '../utils.jsx'
 
 const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
-    const [projectList, SetProjectList] = useState([])
+    const [profile, setProfile] = useState([])
+    const [project, setProject] = useState([])
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -37,8 +40,17 @@ const HeroPage = () => {
             return
         }
         setShowPage(true)
+        getDataList({ token: token, setList: setProfile, URL: profileURL })
+        getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
     }, [])
 
+    const formatTaskData = ({ projectObj }) => {
+        var tempList = [[], [], [], []]
+        if (project[0] != undefined)
+            tempList[0] = projectObj[0]['task'].map((item, index) => item.title)
+        return tempList
+
+    }
     return !showPage ? (<div style={{
         width: "100%",
         height: "100vh",
@@ -100,12 +112,17 @@ const HeroPage = () => {
                     }}
                 />
             </AppBar>
-            <DnDComponent listData={[
-                ["Item 1", "Item 2"],
-                ["Item 3", "Item 4", "Item 5"],
-                [],
-                []
-            ]} />
+            <Box
+                sx={{
+                    width: "95%",
+                    margin: "0px",
+                    padding: "0px"
+
+                }}
+
+            >
+                <DnDComponent listData={formatTaskData({ projectObj: project })} />
+            </Box>
         </Box>
 
 

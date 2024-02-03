@@ -16,8 +16,8 @@ import {
     loadJWTToken,
     deleteJWTToken,
     checkExpiration,
-    projectListURL,
-    taskListURL,
+    projectURL,
+    taskURL,
     getDataList,
     getDataItem
 } from '../utils.jsx'
@@ -43,8 +43,8 @@ const TestPage = () => {
             navigateTo('/login')
             return
         }
-        getDataList({ token: token, setList: SetProjectList, URL: projectListURL })
-        getDataList({ token: token, setList: SetTaskList, URL: taskListURL })
+        getDataList({ token: token, setList: SetProjectList, URL: projectURL })
+        getDataList({ token: token, setList: SetTaskList, URL: taskURL })
         SetCanRender(true)
     }, [])
 
