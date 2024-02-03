@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'User',
     'ProjectGroup',
+    'ProjectUser',
     'Task',
     'Subtask',
 ]

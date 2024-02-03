@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import User
-# from ProjectGroup.serializer import ProjectListSerializer
+from ProjectGroup.serializer import ProjectListSerializer
 
 
 class UserRegisterationSerializer(serializers.ModelSerializer):
@@ -38,9 +38,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    # project = ProjectListSerializer(
-    #     source='user_list', many=True, read_only=True)
+    project_list = ProjectListSerializer(
+        source='user_list', many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ["id", "name", "username", "project", "email"]
+        fields = ["id", "name", "username", "email", "project_list"]
