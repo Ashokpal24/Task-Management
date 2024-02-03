@@ -34,6 +34,7 @@ class ProjectListView(APIView):
             "description": request.data.get('description'),
             "created_by": request.user.pk
         }
+        print(data)
         serializer = ProjectDetailedSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -63,5 +64,36 @@ class ProjectDetailedView(APIView):
         serializer = ProjectDetailedSerializer(instance=project_instance)
         return Response(
             serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+    def put(self, request, project_id, *args, **kwargs):
+        project_instance = ProjectGroup.objects.get(id=project_id)
+        if not project_instance:
+            return Response(
+                {"Msg": f"No Project with id {project_instance.pk} available"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        new_data = request.data
+        new_data.pop('created_by', None)
+        serializer = ProjectDetailedSerializer(
+            instance=project_instance,
+            data=new_data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, project_id, *args, **kwargs):
+        project_instance = ProjectGroup.objects.get(id=project_id)
+        if not project_instance:
+            return Response(
+                {"Msg": f"No Project with id {project_instance.pk} available"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        project_instance.delete()
+        return Response(
+            {"Msg": "Object deleted!"},
             status=status.HTTP_200_OK
         )
