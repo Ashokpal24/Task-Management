@@ -9,7 +9,7 @@ class TaskListSerializer(serializers.ModelSerializer):
 
         fields = ['id',
                   'title',
-                  'mark_done',
+                  'status',
                   'percentage',
                   'project_id',
                   'created_by',
@@ -29,7 +29,7 @@ class TaskDetailedSerializer(serializers.ModelSerializer):
 
         fields = ['id',
                   'title',
-                  'mark_done',
+                  'status',
                   'percentage',
                   'subtasks',
                   'project_id',

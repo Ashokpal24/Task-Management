@@ -11,7 +11,7 @@ class Task(models.Model):
 
     percentage = models.FloatField(verbose_name="Percentage", default=0.0)
 
-    mark_done = models.BooleanField(verbose_name="Completed", default=False)
+    status = models.TextField(verbose_name="status", default="New", null=False)
 
     project_id = models.ForeignKey(
         ProjectGroup,
@@ -35,4 +35,4 @@ class Task(models.Model):
         auto_now=True)
 
     def __str__(self):
-        return f"Title: {self.title}\n Percentage: {self.percentage}\n Done: {self.mark_done} \n Created by:{self.created_by}"
+        return f"Title: {self.title}\n Percentage: {self.percentage}\n Done: {self.status} \n Created by:{self.created_by}"

@@ -34,6 +34,7 @@ class TaskListView(APIView):
         data = {
             "title": request.data.get('title'),
             "project_id": request.data.get('project_id'),
+            "status": request.data.get('status') if request.data.get('status') == 'New' else 'New',
             "created_by": request.user.pk
         }
         serializer = TaskListSerializer(data=data)
@@ -64,9 +65,6 @@ class TaskDetailedView(APIView, TaskUtils):
             )
 
         new_data = request.data
-        if new_data['mark_done'] == 'true':  # type: ignore
-            new_data['percentage'] = 100.0  # type: ignore
-        # print(new_data)
 
         serializer = TaskListSerializer(
             instance=task_instance,
