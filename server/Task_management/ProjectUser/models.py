@@ -7,7 +7,7 @@ from ProjectGroup.models import ProjectGroup
 class ProjectMembership(models.Model):
     project = models.ForeignKey(
         ProjectGroup,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="Project",
         null=True,
         related_name="membership_list"
@@ -15,7 +15,7 @@ class ProjectMembership(models.Model):
 
     member = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="User ID",
         null=True,
         related_name="membership_list"

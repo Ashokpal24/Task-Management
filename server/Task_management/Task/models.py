@@ -22,7 +22,7 @@ class Task(models.Model):
 
     created_by = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="User ID",
         null=True)
 

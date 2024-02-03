@@ -15,7 +15,7 @@ class ProjectGroup(models.Model):
 
     created_by = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="User ID",
         null=True,
         related_name='user_list'

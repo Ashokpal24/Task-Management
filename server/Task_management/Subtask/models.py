@@ -5,17 +5,17 @@ from Task.models import Task
 
 class Subtask(models.Model):
     title = models.CharField(max_length=255, blank=False)
-    mark_done = models.BooleanField(default=True)
+    mark_done = models.BooleanField(default=False)
     task = models.ForeignKey(
         Task,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="Task",
         null=True,
         related_name="subtasks"
     )
     created_by = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="User ID",
         null=True,
         related_name="subtasks"
