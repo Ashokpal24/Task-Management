@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   List,
+  ListItem,
+  ListItemText,
   Typography,
   Card,
   CardActionArea,
   CardContent,
   CardActions,
   Button,
+  Divider
 
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -27,6 +30,7 @@ const DnDComponent = ({ listData }) => {
   const mouseEnterID = useRef(null);
 
   useEffect(() => {
+    console.log(listData)
     SetListContainer1(listData);
   }, [listData]);
 
@@ -150,7 +154,7 @@ const DnDComponent = ({ listData }) => {
     clone.style.position = "absolute";
     clone.style.left = `${event.pageX}px`;
     clone.style.top = `${event.pageY}px`;
-    clone.style.transform = "translate(-10%,-10%)";
+    clone.style.transform = "translate(-30%,-5%)";
     clone.style.width = "250px";
     clone.style.rotate = "5deg";
     clone.style.pointerEvents = "none";
@@ -173,9 +177,12 @@ const DnDComponent = ({ listData }) => {
           id={`M${mainIndex}C${index}`}
           sx={{
             marginBottom: "1rem",
+            maxHeight: "300px"
+
           }}
         >
           <CardActionArea
+            sx={{ minHeight: "80px" }}
             onMouseDown={(event) => {
               handleMouseDown({
                 event: event,
@@ -187,7 +194,7 @@ const DnDComponent = ({ listData }) => {
           >
             <CardContent sx={{ pointerEvents: "none" }}>
               <Typography sx={{ pointerEvents: "none", fontSize: "16px", marginBottom: "0.2rem" }}>
-                {item}
+                {item.title}
               </Typography>
               <Typography
                 variant="body2"
@@ -200,6 +207,45 @@ const DnDComponent = ({ listData }) => {
               </Typography>
             </CardContent>
           </CardActionArea>
+          <>
+            <Typography
+              marginLeft="1rem"
+              sx={{
+                pointerEvents: "none",
+                fontSize: "16px",
+                marginBottom: "0.2rem"
+              }}
+            >
+              Subtasks
+            </Typography>
+            <List
+              sx={{
+                maxHeight: "95px",
+                overflowY: "auto",
+                boxShadow: "inset 1px 1px 2px #bebebe",
+                marginLeft: "1rem",
+                marginRight: "1rem"
+              }}>
+
+              {item.subtasks.map((subtask, index) => (
+                <div key={subtask.id + "" + item.id}>
+                  <ListItem>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        pointerEvents: "cursor",
+                        fontSize: "12px",
+                        fontWeight: "300"
+                      }}
+                    >
+                      {subtask.title}
+                    </Typography>
+                  </ListItem>
+                  <Divider />
+                </div>
+              ))}
+            </List>
+          </>
           <CardActions>
             <Button color="primary" sx={{
               fontSize: "10px",
@@ -208,7 +254,7 @@ const DnDComponent = ({ listData }) => {
               Comments
             </Button>
           </CardActions>
-        </Card>
+        </Card >
       );
     };
 
@@ -217,7 +263,7 @@ const DnDComponent = ({ listData }) => {
         <Card
           sx={{
             marginBottom: "1rem",
-            height: "150px",
+            height: "290px",
             border: "5px dashed #ccc;",
             backgroundColor: "transparent",
             boxShadow: 0,
@@ -240,7 +286,7 @@ const DnDComponent = ({ listData }) => {
         className="glass list-container"
         id={"f" + mainIndex}
         sx={{
-          minHeight: "200px",
+          minHeight: "370px",
           width: "250px",
           boxShadow: 2,
           display: "flex",
@@ -264,7 +310,7 @@ const DnDComponent = ({ listData }) => {
         </Typography>
         {datalist.map((item, index) => (
           <CardComponent
-            key={item}
+            key={item.id}
             mainIndex={mainIndex}
             index={index}
             item={item}

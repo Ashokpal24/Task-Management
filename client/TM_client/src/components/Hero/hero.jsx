@@ -45,10 +45,32 @@ const HeroPage = () => {
     }, [])
 
     const formatTaskData = ({ projectObj }) => {
-        var tempList = [[], [], [], []]
+        var taskList = [
+            [], //New
+            [], //Progress
+            [], //QC
+            []  //Completed
+        ]
         if (project[0] != undefined)
-            tempList[0] = projectObj[0]['task'].map((item, index) => item.title)
-        return tempList
+            projectObj[0]['task'].forEach((item, index) => {
+                switch (item.status) {
+                    case "New":
+                        taskList[0].push(item)
+                        break;
+                    case "Progress":
+                        taskList[1].push(item)
+                        break;
+                    case "QC":
+                        taskList[2].push(item)
+                        break;
+                    case "Completed":
+                        taskList[3].push(item)
+                        break;
+                    default:
+                        break;
+                }
+            })
+        return taskList
 
     }
     return !showPage ? (<div style={{
