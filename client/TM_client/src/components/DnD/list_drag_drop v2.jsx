@@ -17,9 +17,9 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import { formatToDMY } from "../utils";
+import AddTaskDialog from "../InputPopups/TaskInput";
 // Test
 // 
 // ["Task 6", "Task 7"],
@@ -29,9 +29,9 @@ const DnDComponent = ({ listData }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
 
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
-
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
+  const [taskOpen, setTaskOpen] = useState(false);
 
   const mouseEnterID = useRef(null);
 
@@ -411,6 +411,7 @@ const DnDComponent = ({ listData }) => {
               width: "40%",
               textAlign: "center"
             }}
+            onClick={(event) => setTaskOpen(true)}
           >
             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
             Add task
@@ -451,6 +452,7 @@ const DnDComponent = ({ listData }) => {
           setDataList={SetListContainer1}
         />
       ))}
+      <AddTaskDialog open={taskOpen} setOpen={setTaskOpen} />
     </div>
   );
 };
