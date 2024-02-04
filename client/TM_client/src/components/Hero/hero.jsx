@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
+import { Divider } from '@mui/material';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import { pink } from '@mui/material/colors';
@@ -106,17 +107,19 @@ const HeroPage = () => {
                     alignItems: 'center',
                     backgroundColor: "white",
                     color: "black",
-                    marginBottom: "1rem"
+                    marginBottom: "1rem",
+                    borderBottom: "1.5px solid #ccc",
+                    zIndex: 0
                 }} >
                 <Typography
 
                     sx={{
-                        color: "grey",
+                        color: "black",
                         marginLeft: "2rem",
-                        cursor: "pointer"
-
+                        cursor: "pointer",
+                        fontSize: "24px",
+                        fontWeight: "600",
                     }}
-                    variant='h6'
                 >
                     🗒️ Task management
                 </Typography>
@@ -137,20 +140,31 @@ const HeroPage = () => {
                     }}
                 />
             </AppBar>
+            <Typography sx={{
+                width: "95%",
+                heigth: "2rem",
+                alignSelf: "center",
+                marginBottom: "1rem",
+                fontSize: "16px",
+                fontWeight: "600",
+                textAlign: "end",
+                color: "gray"
+            }} >Welcome back👋 {profile.name}</Typography>
             <Box
                 sx={{
                     width: "95%",
                     margin: "0px",
                     padding: "0px",
-                    alignSelf: "end",
+                    alignSelf: "center",
                     marginLeft: "0.2rem",
                     marginRight: "0.2rem"
                 }}
 
             >
+
                 <DnDComponent listData={formatTaskData({ projectObj: project })} />
             </Box>
-        </Box>
+        </Box >
 
 
     )

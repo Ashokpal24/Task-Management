@@ -16,8 +16,9 @@ import {
 
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
+
 import MenuIcon from '@mui/icons-material/Menu';
-import "./style.css";
 import { formatToDMY } from "../utils";
 // Test
 // 
@@ -25,7 +26,7 @@ import { formatToDMY } from "../utils";
 // ["Task 8", "Task 9"],
 
 const DnDComponent = ({ listData }) => {
-  var listSections = ["New Task", "In Progress", "Quality Check", "Completed"]
+  var listSections = ["New task", "In progress", "Quality check", "Completed"]
 
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
 
@@ -301,10 +302,10 @@ const DnDComponent = ({ listData }) => {
                   color: "grey",
                   userSelect: "none"
                 }}>
-                  Progress
+                  Subtask progress
                 </Typography>
                 <Typography sx={{
-                  marginLeft: "6.5rem",
+                  marginLeft: "3rem",
                   pointerEvents: "none",
                   fontSize: "12px",
                   fontWeight: "600",
@@ -316,7 +317,7 @@ const DnDComponent = ({ listData }) => {
                 </Typography>
               </div>
               <LinearProgress variant="determinate" color="inherit" sx={{
-                color: percentage == 100 ? "green" : percentage > 50 ? "yellow" : percentage > 30 ? "orange" : "red",
+                color: percentage == 100 ? "green" : percentage > 50 ? "orange" : percentage > 30 ? "orangered" : "red",
                 marginBottom: "1rem",
               }} value={percentage} />
 
@@ -341,7 +342,7 @@ const DnDComponent = ({ listData }) => {
             minWidth: "250px",
             minHeight: "160px",
             maxHeight: "160px",
-            border: "2px dashed #ccc;",
+            border: "2px dashed gray;",
             boxShadow: 0,
             display: "flex",
             flexDirection: "column",
@@ -350,7 +351,7 @@ const DnDComponent = ({ listData }) => {
             marginBottom: "1rem",
           }}
         >
-          <AddCircleOutlineIcon sx={{ fontSize: "50px", color: "#ccc" }} />
+          <AddCircleOutlineIcon sx={{ fontSize: "24px", color: "black" }} />
         </Card>
       );
     };
@@ -382,17 +383,40 @@ const DnDComponent = ({ listData }) => {
           // borderImage: "linear-gradient(41deg, rgba(252,101,182,1) 0% , rgba(96,164,249,1) 100%) 1",
         }}
       >
-        <Typography
-          marginBottom="1rem"
-          sx={{
-            pointerEvents: "none",
-            color: "#b8b8b8",
-            fontSize: "16px",
-            fontWeight: "600"
-          }}
-        >
-          {label} ({datalist.length})
-        </Typography>
+        <div style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          marginBottom: "1rem"
+        }}>
+          <Typography
+
+            sx={{
+              pointerEvents: "none",
+              color: "gray",
+              fontSize: "16px",
+              fontWeight: "600",
+              userSelect: "none"
+            }}
+          >
+            {label} ({datalist.length})
+          </Typography>
+          <Button
+            sx={{
+              color: "black",
+              fontSize: "12px",
+              fontWeight: "600",
+              width: "40%",
+              textAlign: "center"
+            }}
+          >
+            <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
+            Add task
+          </Button>
+        </div>
+
         {datalist.map((item, index) => (
           <CardComponent
             key={item.id}
