@@ -9,11 +9,16 @@ import {
   CardContent,
   CardActions,
   Button,
-  Divider
+  Divider,
+  Chip,
+  Box,
+  LinearProgress
 
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import MenuIcon from '@mui/icons-material/Menu';
 import "./style.css";
+import { formatToDMY } from "../utils";
 // Test
 // 
 // ["Task 6", "Task 7"],
@@ -159,6 +164,9 @@ const DnDComponent = ({ listData }) => {
     clone.style.rotate = "5deg";
     clone.style.pointerEvents = "none";
     clone.style.zIndex = 100;
+    clone.style.border = "none";
+    clone.style.boxShadow = "10px 10px 50px #bebebe, -10px -10px 50px #ffffff";
+    // clone.style.mixBlendMode = "multiply";
     document.body.appendChild(clone);
   };
 
@@ -171,18 +179,25 @@ const DnDComponent = ({ listData }) => {
     setPlaceholder,
   }) => {
     const CardContainer = () => {
+      var completed = item.subtasks.filter((subtask, index) => subtask.mark_done == true).length
+      var total = item.subtasks.length
+      var percentage = completed / total * 100
       return (
         <Card
           className="card-container"
           id={`M${mainIndex}C${index}`}
           sx={{
+            maxWidth: "250px",
+            minWidth: "250px",
+            minHeight: "160px",
+            maxHeight: "160px",
+            borderRadius: "0.5rem",
             marginBottom: "1rem",
-            maxHeight: "300px"
-
+            boxShadow: 0,
+            border: "1.5px solid black;",
           }}
         >
           <CardActionArea
-            sx={{ minHeight: "80px" }}
             onMouseDown={(event) => {
               handleMouseDown({
                 event: event,
@@ -192,22 +207,35 @@ const DnDComponent = ({ listData }) => {
               });
             }}
           >
-            <CardContent sx={{ pointerEvents: "none" }}>
-              <Typography sx={{ pointerEvents: "none", fontSize: "16px", marginBottom: "0.2rem" }}>
+            <CardContent sx={{
+              pointerEvents: "none",
+              paddingLeft: "1rem",
+              paddingRight: "1rem",
+              paddingTop: "1rem",
+              paddingBottom: "0.5rem",
+            }}>
+              <Typography sx={{
+                pointerEvents: "none",
+                fontSize: "16px",
+                fontWeight: "600",
+              }}>
                 {item.title}
               </Typography>
               <Typography
                 variant="body2"
                 // color="text.secondary"
-                sx={{ pointerEvents: "none", fontSize: "12px", fontWeight: "300" }}
+                sx={{
+                  pointerEvents: "none",
+                  fontSize: "12px",
+                  fontWeight: "300",
+                  color: "gray"
+                }}
               >
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste
-                cum totam non aliquid omnis quaerat rem dolore voluptatibus eius
-                deserunt.
+                Lorem ipsum, dolor.
               </Typography>
             </CardContent>
           </CardActionArea>
-          <>
+          {/* <>
             <Typography
               marginLeft="1rem"
               sx={{
@@ -245,14 +273,61 @@ const DnDComponent = ({ listData }) => {
                 </div>
               ))}
             </List>
-          </>
-          <CardActions>
-            <Button color="primary" sx={{
-              fontSize: "10px",
-              fontWeight: "500"
+          </> */}
+          <CardActions sx={{ padding: 0 }}>
+            <Box sx={{
+              paddingLeft: "1rem",
+              paddingRight: "1rem",
+              paddingTop: "0rem",
+              paddingBottom: "0.2rem",
+              width: "100%"
             }}>
-              Comments
-            </Button>
+              <div style={{
+                display: "flex",
+                flexDirection: "row",
+                // justifyContent: "space-around",
+                alignItems: "center"
+              }}>
+                <MenuIcon sx={{
+                  color: "#ccc", marginBottom: "0.5rem",
+                  marginRight: "0.5rem",
+                  cursor: "pointer",
+                }} />
+                <Typography sx={{
+                  pointerEvents: "none",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  marginBottom: "0.2rem",
+                  color: "grey",
+                  userSelect: "none"
+                }}>
+                  Progress
+                </Typography>
+                <Typography sx={{
+                  marginLeft: "6.5rem",
+                  pointerEvents: "none",
+                  fontSize: "12px",
+                  fontWeight: "600",
+                  marginBottom: "0.2rem",
+                  color: "black",
+                  userSelect: "none",
+                }}>
+                  {completed}/{total}
+                </Typography>
+              </div>
+              <LinearProgress variant="determinate" color="inherit" sx={{
+                color: percentage == 100 ? "green" : percentage > 50 ? "yellow" : percentage > 30 ? "orange" : "red",
+                marginBottom: "1rem",
+              }} value={percentage} />
+
+              <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
+                backgroundColor: "#fff2f2",
+                color: "#ff9696",
+                fontWeight: "600",
+                userSelect: "none"
+              }} />
+            </Box>
+
           </CardActions>
         </Card >
       );
@@ -262,15 +337,17 @@ const DnDComponent = ({ listData }) => {
       return (
         <Card
           sx={{
-            marginBottom: "1rem",
-            height: "290px",
-            border: "5px dashed #ccc;",
-            backgroundColor: "transparent",
+            maxWidth: "250px",
+            minWidth: "250px",
+            minHeight: "160px",
+            maxHeight: "160px",
+            border: "2px dashed #ccc;",
             boxShadow: 0,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            marginBottom: "1rem",
           }}
         >
           <AddCircleOutlineIcon sx={{ fontSize: "50px", color: "#ccc" }} />
@@ -286,27 +363,35 @@ const DnDComponent = ({ listData }) => {
         className="glass list-container"
         id={"f" + mainIndex}
         sx={{
-          minHeight: "370px",
-          width: "250px",
-          boxShadow: 2,
+          minHeight: "220px",
+          width: "280px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "first",
+          alignItems: "center",
           alignSelf: "flex-start",
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
-          paddingBottom: "0.5rem",
+          border: "2px dashed #ccc;",
+          borderRadius: "0.5rem",
+          backgroundColor: "transparent",
+          boxShadow: 0,
+          paddingLeft: "0.2rem",
+          paddingRight: "0.2rem",
+          paddingBottom: "0.2rem",
           borderEndEndRadius: ".2rem",
-          borderTop: "5px solid",
-          borderImage: "linear-gradient(41deg, rgba(252,101,182,1) 0% , rgba(96,164,249,1) 100%) 1",
+          // borderTop: "5px solid",
+          // borderImage: "linear-gradient(41deg, rgba(252,101,182,1) 0% , rgba(96,164,249,1) 100%) 1",
         }}
       >
         <Typography
           marginBottom="1rem"
-          variant="h6"
-          sx={{ pointerEvents: "none" }}
+          sx={{
+            pointerEvents: "none",
+            color: "#b8b8b8",
+            fontSize: "16px",
+            fontWeight: "600"
+          }}
         >
-          {label}
+          {label} ({datalist.length})
         </Typography>
         {datalist.map((item, index) => (
           <CardComponent
@@ -329,7 +414,7 @@ const DnDComponent = ({ listData }) => {
       style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignContent: "first",
       }}
     >

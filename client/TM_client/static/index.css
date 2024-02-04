@@ -4,9 +4,10 @@ body {
   margin: 0%;
 
 }
-/* ::-webkit-scrollbar{
-  display: flex;
-} */
+
+::-webkit-scrollbar{
+  display: none;
+}
 
 
 .glass {
@@ -20,8 +21,9 @@ body {
 }
 
 .background-gradient2{
-  background: rgb(255,240,248);
-  background: linear-gradient(41deg, rgba(255,240,248,1) 0%, rgba(210,230,255,1) 100%); 
+  background-color: white;
+  /* background: rgb(255,240,248);
+  background: linear-gradient(41deg, rgba(255,240,248,1) 0%, rgba(210,230,255,1) 100%);  */
 }
 .pink-tone:hover{
   color:#589ae5 ;

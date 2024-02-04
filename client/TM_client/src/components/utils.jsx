@@ -83,6 +83,24 @@ const getDataItem = async ({ token, setItem, URL, Id }) => {
     }
 }
 
+const formatToDMY = ({ dateString }) => {
+
+    const tempString = dateString.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    const isoDate = new Date(tempString);
+
+    const day = isoDate.getDate();
+    const monthNames = [
+        'Jan', 'Feb', 'March', 'April', 'May', 'June',
+        'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
+    ];
+    const month = isoDate.getMonth();
+    const year = isoDate.getFullYear();
+
+    const formattedDate = `${day} ${monthNames[month]} ${year}`;
+
+    return formattedDate;
+}
+
 export {
     saveJWTToken,
     loadJWTToken,
@@ -95,6 +113,7 @@ export {
     profileURL,
     projectURL,
     taskURL,
-    subtaskURL
+    subtaskURL,
+    formatToDMY
 }
 

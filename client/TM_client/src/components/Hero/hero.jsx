@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import { pink } from '@mui/material/colors';
-import LogoutRounded from '@mui/icons-material/LogoutRounded';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CircularProgress from '@mui/material/CircularProgress';
 import DnDComponent from '../DnD/list_drag_drop v2.jsx';
 import Avatar from '@mui/material/Avatar';
@@ -87,21 +87,24 @@ const HeroPage = () => {
                 width: "100%",
                 minHeight: "100vh",
                 margin: "0px",
-                padding: "0px"
+                padding: "0px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start"
 
             }}
 
         >
             <AppBar
                 sx={{
-                    boxShadow: 1,
+                    boxShadow: 'none',
                     position: 'static',
                     padding: '10px',
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    backgroundColor: "rgba(255, 255, 255, 0.845)",
+                    backgroundColor: "white",
                     color: "black",
                     marginBottom: "1rem"
                 }} >
@@ -117,7 +120,7 @@ const HeroPage = () => {
                 >
                     🗒️ Task management
                 </Typography>
-                <LogoutRounded
+                <ExitToAppIcon
                     className="pink-tone"
                     sx={{
                         borderRadius: "5px",
@@ -138,8 +141,10 @@ const HeroPage = () => {
                 sx={{
                     width: "95%",
                     margin: "0px",
-                    padding: "0px"
-
+                    padding: "0px",
+                    alignSelf: "end",
+                    marginLeft: "0.2rem",
+                    marginRight: "0.2rem"
                 }}
 
             >
