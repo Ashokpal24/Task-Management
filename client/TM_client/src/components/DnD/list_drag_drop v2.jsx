@@ -19,24 +19,22 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import MenuIcon from '@mui/icons-material/Menu';
 import { formatToDMY } from "../utils";
-import AddTaskDialog from "../InputPopups/TaskInput";
 // Test
 // 
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 
-const DnDComponent = ({ listData }) => {
+const DnDComponent = ({ listData, setOpen }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
 
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
-  const [taskOpen, setTaskOpen] = useState(false);
 
   const mouseEnterID = useRef(null);
 
   useEffect(() => {
-    console.log(listData)
+    // console.log(listData)
     SetListContainer1(listData);
   }, [listData]);
 
@@ -276,7 +274,7 @@ const DnDComponent = ({ listData }) => {
             </List>
           </> */}
           <CardActions sx={{ padding: 0 }}>
-            <Box sx={{
+            {total > 0 ? (<Box sx={{
               paddingLeft: "1rem",
               paddingRight: "1rem",
               paddingTop: "0rem",
@@ -328,7 +326,7 @@ const DnDComponent = ({ listData }) => {
                 userSelect: "none"
               }} />
             </Box>
-
+            ) : (<>No Task includes</>)}
           </CardActions>
         </Card >
       );
@@ -411,7 +409,7 @@ const DnDComponent = ({ listData }) => {
               width: "40%",
               textAlign: "center"
             }}
-            onClick={(event) => setTaskOpen(true)}
+            onClick={(event) => setOpen(true)}
           >
             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
             Add task
@@ -452,7 +450,6 @@ const DnDComponent = ({ listData }) => {
           setDataList={SetListContainer1}
         />
       ))}
-      <AddTaskDialog open={taskOpen} setOpen={setTaskOpen} />
     </div>
   );
 };

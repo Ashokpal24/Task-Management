@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
-import { Divider } from '@mui/material';
 import Box from '@mui/system/Box';
-import Button from '@mui/material/Button';
-import { pink } from '@mui/material/colors';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CircularProgress from '@mui/material/CircularProgress';
 import DnDComponent from '../DnD/list_drag_drop v2.jsx';
-import Avatar from '@mui/material/Avatar';
 import "../../../static/index.css";
+import AddTaskDialog from "../InputPopups/TaskInput";
+
 
 import {
     loadJWTToken,
@@ -28,6 +26,7 @@ const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
     const [profile, setProfile] = useState([])
     const [project, setProject] = useState([])
+    const [taskOpen, setTaskOpen] = useState(false);
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -162,7 +161,10 @@ const HeroPage = () => {
 
             >
 
-                <DnDComponent listData={formatTaskData({ projectObj: project })} />
+                <DnDComponent listData={formatTaskData({ projectObj: project })} setOpen={setTaskOpen} />
+
+                {project.length > 0 ? (< AddTaskDialog open={taskOpen} setOpen={setTaskOpen} token={token} projectId={project[0].id} />) : (<></>)}
+
             </Box>
         </Box >
 
