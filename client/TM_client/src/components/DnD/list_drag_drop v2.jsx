@@ -274,24 +274,61 @@ const DnDComponent = ({ listData, setOpen }) => {
             </List>
           </> */}
           <CardActions sx={{ padding: 0 }}>
-            {total > 0 ? (<Box sx={{
+            <Box sx={{
               paddingLeft: "1rem",
               paddingRight: "1rem",
               paddingTop: "0rem",
               paddingBottom: "0.2rem",
               width: "100%"
             }}>
-              <div style={{
+              {total > 0 ? (
+                <>
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    // justifyContent: "space-around",
+                    alignItems: "center"
+                  }}>
+                    <MenuIcon sx={{
+                      color: "#ccc", marginBottom: "0.5rem",
+                      marginRight: "0.5rem",
+                      cursor: "pointer",
+                    }} />
+                    <Typography sx={{
+                      pointerEvents: "none",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      marginBottom: "0.2rem",
+                      color: "grey",
+                      userSelect: "none"
+                    }}>
+                      Subtask progress
+                    </Typography>
+                    <Typography sx={{
+                      marginLeft: "3rem",
+                      pointerEvents: "none",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      marginBottom: "0.2rem",
+                      color: "black",
+                      userSelect: "none",
+                    }}>
+                      {completed}/{total}
+                    </Typography>
+                  </div>
+                  <LinearProgress variant="determinate" color="inherit" sx={{
+                    color: percentage == 100 ? "green" : percentage > 50 ? "orange" : percentage > 30 ? "orangered" : "red",
+                    marginBottom: "1rem",
+                  }} value={percentage} />
+                </>
+              ) : (<div style={{
+                width: "100%",
                 display: "flex",
                 flexDirection: "row",
-                // justifyContent: "space-around",
-                alignItems: "center"
+                justifyContent: "space-around",
+                alignItems: "center",
+                marginBottom: "0.2rem"
               }}>
-                <MenuIcon sx={{
-                  color: "#ccc", marginBottom: "0.5rem",
-                  marginRight: "0.5rem",
-                  cursor: "pointer",
-                }} />
                 <Typography sx={{
                   pointerEvents: "none",
                   fontSize: "12px",
@@ -299,26 +336,21 @@ const DnDComponent = ({ listData, setOpen }) => {
                   marginBottom: "0.2rem",
                   color: "grey",
                   userSelect: "none"
-                }}>
-                  Subtask progress
-                </Typography>
-                <Typography sx={{
-                  marginLeft: "3rem",
-                  pointerEvents: "none",
-                  fontSize: "12px",
-                  fontWeight: "600",
-                  marginBottom: "0.2rem",
-                  color: "black",
-                  userSelect: "none",
-                }}>
-                  {completed}/{total}
-                </Typography>
-              </div>
-              <LinearProgress variant="determinate" color="inherit" sx={{
-                color: percentage == 100 ? "green" : percentage > 50 ? "orange" : percentage > 30 ? "orangered" : "red",
-                marginBottom: "1rem",
-              }} value={percentage} />
-
+                }}> No subtask</Typography>
+                <Button
+                  sx={{
+                    color: "black",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    width: "60%",
+                    textAlign: "center"
+                  }}
+                // onClick={(event) => setOpen(true)}
+                >
+                  <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
+                  Add Subtask
+                </Button>
+              </div>)}
               <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
                 backgroundColor: "#fff2f2",
                 color: "#ff9696",
@@ -326,7 +358,7 @@ const DnDComponent = ({ listData, setOpen }) => {
                 userSelect: "none"
               }} />
             </Box>
-            ) : (<>No Task includes</>)}
+
           </CardActions>
         </Card >
       );

@@ -40,9 +40,18 @@ const HeroPage = () => {
             return
         }
         setShowPage(true)
-        getDataList({ token: token, setList: setProfile, URL: profileURL })
-        getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
+        getProjectData()
+        getProfileData()
     }, [])
+
+    const getProjectData = () => {
+        getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
+    }
+
+    const getProfileData = () => {
+        getDataList({ token: token, setList: setProfile, URL: profileURL })
+
+    }
 
     const formatTaskData = ({ projectObj }) => {
         var taskList = [
@@ -163,7 +172,14 @@ const HeroPage = () => {
 
                 <DnDComponent listData={formatTaskData({ projectObj: project })} setOpen={setTaskOpen} />
 
-                {project.length > 0 ? (< AddTaskDialog open={taskOpen} setOpen={setTaskOpen} token={token} projectId={project[0].id} />) : (<></>)}
+                {project.length > 0 ? (
+                    < AddTaskDialog open={taskOpen}
+                        setOpen={setTaskOpen}
+                        token={token}
+                        projectId={project[0].id}
+                        getProjectData={getProjectData} />
+                ) :
+                    (<></>)}
 
             </Box>
         </Box >

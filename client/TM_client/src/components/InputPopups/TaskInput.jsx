@@ -34,7 +34,7 @@ const CustomTextField = styled(TextField)({
     },
 });
 
-export default function AddTaskDialog({ open, setOpen, token, projectId }) {
+export default function AddTaskDialog({ open, setOpen, token, projectId, getProjectData }) {
     const [taskTitle, setTaskTitle] = useState('')
     const [status, setStatus] = useState('')
     const [alertMessage, setALertMessage] = useState('')
@@ -71,6 +71,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId }) {
             setStatus('success')
             setALertMessage('Task added Successful😄')
             setTimeout(() => setOpen(false), 1000)
+            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
