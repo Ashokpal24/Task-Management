@@ -1,4 +1,8 @@
 import { jwtDecode } from "jwt-decode";
+import {
+    TextField,
+    styled,
+} from '@mui/material';
 
 const profileURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/profile/'
 const loginURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/login/'
@@ -7,6 +11,27 @@ const projectURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.git
 const taskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
 const subtaskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
 
+
+const CustomTextField = styled(TextField)({
+    '& label.Mui-focused': {
+        color: '#A0AAB4',
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: '#B2BAC2',
+    },
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: '#E0E3E7',
+        },
+        '&:hover fieldset': {
+            borderColor: '#B2BAC2',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: 'black',
+            border: "1.5px solid"
+        },
+    },
+});
 
 const saveJWTToken = ({ accessToken, refreshToken }) => {
 
@@ -115,6 +140,7 @@ export {
     projectURL,
     taskURL,
     subtaskURL,
-    formatToDMY
+    formatToDMY,
+    CustomTextField
 }
 

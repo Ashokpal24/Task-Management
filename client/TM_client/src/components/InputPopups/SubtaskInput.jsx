@@ -9,53 +9,17 @@ import {
     DialogTitle,
     Alert
 } from '@mui/material';
-import { taskURL, CustomTextField } from '../utils';
+
+import { CustomTextField } from '../utils';
+import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 
 
-
-export default function AddTaskDialog({ open, setOpen, token, projectId, getProjectData }) {
-    const [taskTitle, setTaskTitle] = useState('')
-    const [status, setStatus] = useState('')
-    const [alertMessage, setALertMessage] = useState('')
+export default function AddSubtaskDialog({ open, setOpen }) {
 
     const handleClose = () => {
-        setStatus('')
-        setALertMessage('')
         setOpen(false);
     };
-    const handleAddTask = async () => {
 
-        try {
-            const response = await fetch(taskURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token.accessToken
-                },
-                body: JSON.stringify({ title: taskTitle, project_id: projectId })
-
-            })
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                if (errorData.hasOwnProperty('title')) {
-                    setStatus('error')
-                    setALertMessage('Title field should not be empty 😢')
-                }
-                console.log(errorData)
-                return; l
-            }
-            const data = await response.json();
-            console.log(data);
-            setStatus('success')
-            setALertMessage('Task added Successful😄')
-            setTimeout(() => setOpen(false), 1000)
-            getProjectData()
-        }
-        catch (error) {
-            console.error("An error occurred during login:", error);
-        }
-    }
     return (
 
         <Dialog
@@ -69,7 +33,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 paddingBottom: 0,
                 marginBottom: '0.2rem',
             }}>
-                Add Task
+                Add Subtask
             </DialogTitle>
             <DialogContent sx={{
                 display: 'flex',
@@ -90,14 +54,20 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     }}
                     required={true}
                     autoComplete='off'
-                    value={taskTitle}
-                    onChange={(event) => setTaskTitle(event.target.value)}
                 />
-                {alertMessage != '' ? (
-                    <Box sx={{ width: '100%' }}>
-                        <Alert severity={status}>{alertMessage}</Alert>
-                    </Box>
-                ) : <></>}
+                <Button
+                    sx={{
+                        color: "black",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        width: "100%",
+                        textAlign: "center"
+                    }}
+                // onClick={(event) => setSubtaskOpen(true)}
+                >
+                    <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
+                    Add more Subtask
+                </Button>
             </DialogContent>
             <DialogActions sx={{
                 display: "flex",
@@ -114,7 +84,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "600"
-                    }} onClick={handleAddTask}>
+                    }} onClick={handleClose}>
                         Add
                     </Button>
                     <Button color='inherit' sx={{
@@ -127,6 +97,6 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     </Button>
                 </Box>
             </DialogActions>
-        </Dialog>
+        </Dialog >
     );
 }

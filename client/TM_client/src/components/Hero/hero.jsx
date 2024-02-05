@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import DnDComponent from '../DnD/list_drag_drop v2.jsx';
 import "../../../static/index.css";
 import AddTaskDialog from "../InputPopups/TaskInput";
+import AddSubtaskDialog from '../InputPopups/SubtaskInput.jsx';
 
 
 import {
@@ -27,6 +28,8 @@ const HeroPage = () => {
     const [profile, setProfile] = useState([])
     const [project, setProject] = useState([])
     const [taskOpen, setTaskOpen] = useState(false);
+    const [subtaskOpen, setSubtaskOpen] = useState(false);
+
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -170,14 +173,26 @@ const HeroPage = () => {
 
             >
 
-                <DnDComponent listData={formatTaskData({ projectObj: project })} setOpen={setTaskOpen} />
-
+                <DnDComponent
+                    listData={formatTaskData({ projectObj: project })}
+                    setTaskOpen={setTaskOpen}
+                    setSubtaskOpen={setSubtaskOpen}
+                />
                 {project.length > 0 ? (
-                    < AddTaskDialog open={taskOpen}
-                        setOpen={setTaskOpen}
-                        token={token}
-                        projectId={project[0].id}
-                        getProjectData={getProjectData} />
+                    <>
+                        < AddTaskDialog
+                            open={taskOpen}
+                            setOpen={setTaskOpen}
+                            token={token}
+                            projectId={project[0].id}
+                            getProjectData={getProjectData} />
+
+                        <AddSubtaskDialog
+                            open={subtaskOpen}
+                            setOpen={setSubtaskOpen}
+                        />
+                    </>
+
                 ) :
                     (<></>)}
 

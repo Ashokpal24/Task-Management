@@ -24,7 +24,7 @@ import { formatToDMY } from "../utils";
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 
-const DnDComponent = ({ listData, setOpen }) => {
+const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
 
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
@@ -342,13 +342,13 @@ const DnDComponent = ({ listData, setOpen }) => {
                     color: "black",
                     fontSize: "12px",
                     fontWeight: "600",
-                    width: "60%",
+                    width: "65%",
                     textAlign: "center"
                   }}
-                // onClick={(event) => setOpen(true)}
+                  onClick={(event) => setSubtaskOpen(true)}
                 >
                   <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
-                  Add Subtask
+                  Add Subtasks
                 </Button>
               </div>)}
               <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
@@ -441,7 +441,7 @@ const DnDComponent = ({ listData, setOpen }) => {
               width: "40%",
               textAlign: "center"
             }}
-            onClick={(event) => setOpen(true)}
+            onClick={(event) => setTaskOpen(true)}
           >
             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
             Add task
