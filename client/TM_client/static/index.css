@@ -6,10 +6,10 @@ body {
 
 }
 
-::-webkit-scrollbar{
-  display: none;
+html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
 }
-
 
 .glass {
   backdrop-filter: blur(7.5px) saturate(180%);

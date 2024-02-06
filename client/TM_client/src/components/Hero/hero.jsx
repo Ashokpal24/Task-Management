@@ -99,7 +99,6 @@ const HeroPage = () => {
                 width: "100%",
                 minHeight: "100vh",
                 margin: "0px",
-                padding: "0px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "start"
