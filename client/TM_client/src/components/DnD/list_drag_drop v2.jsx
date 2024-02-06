@@ -372,6 +372,7 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
             minWidth: "250px",
             minHeight: "160px",
             maxHeight: "160px",
+            borderRadius: "0.5rem",
             border: "2px dashed gray;",
             boxShadow: 0,
             display: "flex",
@@ -408,7 +409,6 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
           paddingLeft: "0.2rem",
           paddingRight: "0.2rem",
           paddingBottom: "0.2rem",
-          borderEndEndRadius: ".2rem",
           // borderTop: "5px solid",
           // borderImage: "linear-gradient(41deg, rgba(252,101,182,1) 0% , rgba(96,164,249,1) 100%) 1",
         }}

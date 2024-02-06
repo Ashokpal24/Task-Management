@@ -85,26 +85,30 @@ const HeroPage = () => {
         return taskList
 
     }
-    return !showPage ? (<div style={{
-        width: "100%",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center"
-    }}><CircularProgress /></div>) : (
+    return !showPage ? (
+        <div style={{
+            width: "100%",
+            height: "100vh",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center"
+        }}>
+            <CircularProgress />
+        </div>) : (
         <Box
             className="background-gradient2"
             sx={{
-                width: "100%",
+                width: "100vw",
+                marginRight: "calc(100vw - 100%)",
+                marginLeft: 0,
                 minHeight: "100vh",
                 margin: "0px",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "start"
-
+                justifyContent: "start",
+                alignItems: 'center'
             }}
-
         >
             <AppBar
                 sx={{
@@ -171,12 +175,6 @@ const HeroPage = () => {
                 }}
 
             >
-
-                <DnDComponent
-                    listData={formatTaskData({ projectObj: project })}
-                    setTaskOpen={setTaskOpen}
-                    setSubtaskOpen={setSubtaskOpen}
-                />
                 {project.length > 0 ? (
                     <>
                         < AddTaskDialog
@@ -192,9 +190,12 @@ const HeroPage = () => {
                         />
                     </>
 
-                ) :
-                    (<></>)}
-
+                ) : (<></>)}
+                <DnDComponent
+                    listData={formatTaskData({ projectObj: project })}
+                    setTaskOpen={setTaskOpen}
+                    setSubtaskOpen={setSubtaskOpen}
+                />
             </Box>
         </Box >
 

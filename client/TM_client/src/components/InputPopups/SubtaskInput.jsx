@@ -126,9 +126,21 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                             labelPlacement="end"
                                         />
                                         <Divider orientation='vertical' flexItem />
-                                        <EditIcon sx={{ color: 'blueviolet', marginLeft: '1rem', marginRight: '1rem' }} />
+                                        <EditIcon sx={{
+                                            color: 'blueviolet',
+                                            marginLeft: '1rem',
+                                            marginRight: '1rem',
+                                            ':hover': { color: 'violet' },
+                                            transition: '0.2s'
+                                        }} />
                                         <Divider orientation='vertical' flexItem />
-                                        <DeleteIcon sx={{ color: 'red', marginLeft: '1rem', marginRight: '1rem' }} />
+                                        <DeleteIcon sx={{
+                                            color: 'red',
+                                            marginLeft: '1rem',
+                                            marginRight: '1rem',
+                                            ':hover': { color: '#7e1c1c' },
+                                            transition: '0.2s'
+                                        }} />
                                     </Box>
                                     <Divider />
                                 </div>
