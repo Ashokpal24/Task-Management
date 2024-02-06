@@ -15,7 +15,8 @@ import {
     Divider,
     Typography,
     FormControlLabel,
-    Checkbox
+    Checkbox,
+    TextField
 } from '@mui/material';
 
 import { CustomTextField } from '../utils';
@@ -25,6 +26,9 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 export default function AddSubtaskDialog({ open, setOpen }) {
+
+    const [editTitle, setEditTitle] = useState(false)
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -112,35 +116,56 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                         }}
 
                                     >
-                                        <ListItemButton sx={{ height: '50px' }}>subtask{item + 1}</ListItemButton>
+                                        {editTitle
+                                            ? (<Box sx={{ height: '50px', width: '340px' }} />)
+                                            : (<>
+                                                <ListItemButton sx={{ height: '50px', width: '280px' }}>subtask{item + 1}</ListItemButton>
+                                                <Divider orientation='vertical' flexItem />
+                                                <EditIcon
+                                                    sx={{
+                                                        color: 'blueviolet',
+                                                        width: '60px',
+                                                        ':hover': { color: 'violet' },
+                                                        transition: '0.2s',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => setEditTitle(true)}
+                                                />
+                                            </>)}
                                         <Divider orientation='vertical' flexItem />
-                                        <FormControlLabel
-                                            sx={{ marginLeft: '0.5rem', marginRight: '1rem' }}
-                                            control={<Checkbox sx={{
-                                                color: 'green',
-                                                '&.Mui-checked': {
+                                        <Box sx={{
+                                            height: '50px',
+                                            width: '242px',
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            justifyContent: 'start',
+                                            alignItems: 'center',
+                                        }}>
+                                            <FormControlLabel
+                                                sx={{
+                                                    width: '182px',
+                                                    marginLeft: '1rem'
+
+                                                }}
+                                                control={<Checkbox sx={{
                                                     color: 'green',
-                                                },
-                                            }} />}
-                                            label="Mark Done"
-                                            labelPlacement="end"
-                                        />
-                                        <Divider orientation='vertical' flexItem />
-                                        <EditIcon sx={{
-                                            color: 'blueviolet',
-                                            marginLeft: '1rem',
-                                            marginRight: '1rem',
-                                            ':hover': { color: 'violet' },
-                                            transition: '0.2s'
-                                        }} />
-                                        <Divider orientation='vertical' flexItem />
-                                        <DeleteIcon sx={{
-                                            color: 'red',
-                                            marginLeft: '1rem',
-                                            marginRight: '1rem',
-                                            ':hover': { color: '#7e1c1c' },
-                                            transition: '0.2s'
-                                        }} />
+                                                    '&.Mui-checked': {
+                                                        color: 'green',
+                                                    },
+                                                }} />}
+                                                label="Mark Done"
+                                                labelPlacement="end"
+                                            />
+                                            <Divider orientation='vertical' flexItem />
+                                            <DeleteIcon
+                                                sx={{
+                                                    width: '60px',
+                                                    color: 'red',
+                                                    ':hover': { color: '#7e1c1c' },
+                                                    transition: '0.2s',
+                                                    cursor: 'pointer',
+                                                }} />
+                                        </Box>
                                     </Box>
                                     <Divider />
                                 </div>
