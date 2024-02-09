@@ -166,7 +166,7 @@ const HeroPage = () => {
             }} >Welcome back👋 {profile.name}</Typography>
             <Box
                 sx={{
-                    width: "95%",
+                    width: "1220px",
                     margin: "0px",
                     padding: "0px",
                     alignSelf: "center",
