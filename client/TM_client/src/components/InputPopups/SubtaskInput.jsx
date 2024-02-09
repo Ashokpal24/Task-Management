@@ -28,6 +28,20 @@ import EditIcon from '@mui/icons-material/Edit';
 export default function AddSubtaskDialog({ open, setOpen }) {
 
     const [editTitle, setEditTitle] = useState(false)
+    const [textArray, setTextArray] = useState([
+        'Subtask 1',
+        'Subtask 2',
+        'Subtask 3',
+        'Subtask 4',
+        'Subtask 5',
+        'Subtask 6',
+        'Subtask 7',
+        'Subtask 8',
+        'Subtask 9',
+        'Subtask 10',
+    ])
+    const [currSubtask, setCurrSubtask] = useState('')
+    const [editSubtask, setEditSubtask] = useState('')
 
     const handleClose = () => {
         setOpen(false);
@@ -102,8 +116,8 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                             }}
                         >
                             {
-                                [...Array(10).keys()].map((item, index) => (
-                                    <div key={item}>
+                                textArray.map((item, index) => (
+                                    <div key={index}>
                                         <Box
                                             sx={{
                                                 width: '100%',
@@ -117,7 +131,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                             {/* {editTitle
                                             ? (<Box sx={{ height: '50px', width: '340px' }} />)
                                             : (<> */}
-                                            <ListItemButton sx={{ height: '50px', width: '280px' }}>subtask{item + 1}</ListItemButton>
+                                            <ListItemButton sx={{ height: '50px', width: '280px' }}>{item}</ListItemButton>
                                             <Divider orientation='vertical' flexItem />
                                             <EditIcon
                                                 sx={{
@@ -127,7 +141,11 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                     transition: '0.2s',
                                                     cursor: 'pointer'
                                                 }}
-                                                onClick={() => setEditTitle(true)}
+                                                onClick={() => {
+                                                    setEditTitle(true);
+                                                    setCurrSubtask(item);
+                                                    setEditSubtask(item);
+                                                }}
                                             />
                                             {/* </>)} */}
                                             <Divider orientation='vertical' flexItem />
@@ -195,7 +213,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                             fontSize: "16px",
                             fontWeight: "600",
                             marginRight: '0.5rem'
-                        }} onClick={handleClose} autoFocus>
+                        }} onClick={handleClose}>
                             Close
                         </Button>
                     </Box>
@@ -217,13 +235,14 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                     Edit Subtask
                 </DialogTitle>
                 <Divider />
-                <Box sx={{
+                <DialogContent sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'start',
                     alignItems: 'center',
                     marginLeft: '1rem',
                     marginRight: '1rem',
+                    padding: 0,
                     width: '90%'
                 }}>
                     <CustomTextField id="task-input"
@@ -236,10 +255,13 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         }}
                         required={true}
                         autoComplete='off'
+                        value={editSubtask}
+                        onChange={(event) => setEditSubtask(event.target.value)}
+                        autoFocus
                     />
-                </Box>
+                </DialogContent>
                 <Divider />
-                <Box sx={{
+                <DialogActions sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -252,7 +274,15 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "600"
-                    }} onClick={() => setEditTitle(false)}>
+                    }} onClick={() => {
+                        setEditTitle(false);
+                        const tempArray = [...textArray];
+                        const index = tempArray.findIndex((element, index) => element === currSubtask);
+                        console.log(index);
+                        tempArray[index] = editSubtask;
+                        console.log(tempArray);
+                        setTextArray(tempArray);
+                    }}>
                         confirm
                     </Button>
                     <Button color='inherit' sx={{
@@ -260,10 +290,10 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         fontSize: "16px",
                         fontWeight: "600",
                         marginRight: '0.5rem'
-                    }} onClick={() => setEditTitle(false)} autoFocus>
+                    }} onClick={() => setEditTitle(false)}>
                         Close
                     </Button>
-                </Box>
+                </DialogActions>
             </>
         )
     }
