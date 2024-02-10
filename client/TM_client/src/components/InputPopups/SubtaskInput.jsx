@@ -58,8 +58,13 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
     }, [subtaskList])
 
     const handleClose = () => {
-        setOpen({ status: false, task_id: null });
         setEditTitle(false);
+        SetSubtaskTitle('');
+        setEditSubtask({})
+        scrollValue.current = 0
+        scrollRef.current = null
+        setOpen({ status: false, task_id: null });
+        getProjectData()
     };
 
 
@@ -90,7 +95,6 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setStatus('success')
             // setALertMessage('Task added Successful😄')
             // setTimeout(() => setOpen(false), 1000)
-            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
@@ -125,7 +129,6 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setStatus('success')
             // setALertMessage('Task added Successful😄')
             // setTimeout(() => setOpen(false), 1000)
-            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
@@ -157,7 +160,6 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setStatus('success')
             // setALertMessage('Task added Successful😄')
             // setTimeout(() => setOpen(false), 1000)
-            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
@@ -247,7 +249,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                         >
                             {
                                 textArray.map((item, index) => (
-                                    <div key={item.id}>
+                                    <div key={index}>
                                         <Box
                                             sx={{
                                                 width: '100%',
