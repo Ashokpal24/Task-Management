@@ -23,25 +23,26 @@ import { CustomTextField } from '../utils';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function AddSubtaskDialog({ open, setOpen }) {
 
     const [editTitle, setEditTitle] = useState(false)
+    const [delSubtask, setDelSubtask] = useState(false)
     const [textArray, setTextArray] = useState([
-        'Subtask 1',
-        'Subtask 2',
-        'Subtask 3',
-        'Subtask 4',
-        'Subtask 5',
-        'Subtask 6',
-        'Subtask 7',
-        'Subtask 8',
-        'Subtask 9',
-        'Subtask 10',
+        { title: 'Subtask 1', mark_done: false },
+        { title: 'Subtask 2', mark_done: false },
+        { title: 'Subtask 3', mark_done: false },
+        { title: 'Subtask 4', mark_done: false },
+        { title: 'Subtask 5', mark_done: false },
+        { title: 'Subtask 6', mark_done: false },
+        { title: 'Subtask 7', mark_done: false },
+        { title: 'Subtask 8', mark_done: false },
+        { title: 'Subtask 9', mark_done: false },
+        { title: 'Subtask 10', mark_done: false },
     ])
-    const [currSubtask, setCurrSubtask] = useState('')
-    const [editSubtask, setEditSubtask] = useState('')
+    const [editSubtask, setEditSubtask] = useState({})
 
     const handleClose = () => {
         setOpen(false);
@@ -126,12 +127,11 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
                                             }}
-
                                         >
                                             {/* {editTitle
                                             ? (<Box sx={{ height: '50px', width: '340px' }} />)
                                             : (<> */}
-                                            <ListItemButton sx={{ height: '50px', width: '280px' }}>{item}</ListItemButton>
+                                            <ListItemButton sx={{ height: '50px', width: '280px' }}>{item.title}</ListItemButton>
                                             <Divider orientation='vertical' flexItem />
                                             <EditIcon
                                                 sx={{
@@ -143,8 +143,12 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                 }}
                                                 onClick={() => {
                                                     setEditTitle(true);
-                                                    setCurrSubtask(item);
-                                                    setEditSubtask(item);
+                                                    setEditSubtask({
+                                                        id: textArray.indexOf(item),
+                                                        title: item.title,
+                                                        mark_done: item.mark_done,
+                                                        del: false
+                                                    });
                                                 }}
                                             />
                                             {/* </>)} */}
@@ -157,30 +161,84 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                 justifyContent: 'start',
                                                 alignItems: 'center',
                                             }}>
-                                                <FormControlLabel
-                                                    sx={{
-                                                        width: '182px',
-                                                        marginLeft: '1rem'
-
+                                                {(editSubtask != {} && editSubtask.del && editSubtask.id == index) ? (<Box sx={{
+                                                    height: '50px',
+                                                    width: '258px',
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                }}>
+                                                    <Typography sx={{ marginLeft: '1rem' }}>Confirm Delete ?</Typography>
+                                                    <CheckCircleIcon sx={{
+                                                        ':hover': { color: 'green' },
+                                                        transition: '0.2s',
+                                                        marginLeft: '1.2rem'
                                                     }}
-                                                    control={<Checkbox sx={{
-                                                        color: 'green',
-                                                        '&.Mui-checked': {
-                                                            color: 'green',
-                                                        },
-                                                    }} />}
-                                                    label="Mark Done"
-                                                    labelPlacement="end"
-                                                />
-                                                <Divider orientation='vertical' flexItem />
-                                                <DeleteIcon
-                                                    sx={{
-                                                        width: '60px',
-                                                        color: 'red',
+                                                        onClick={() => {
+                                                            const tempArray = [...textArray];
+                                                            tempArray.splice(index, 1)
+                                                            setTextArray(tempArray);
+                                                            setEditSubtask({})
+                                                        }}
+                                                    />
+                                                    <CancelIcon sx={{
                                                         ':hover': { color: '#7e1c1c' },
                                                         transition: '0.2s',
-                                                        cursor: 'pointer',
-                                                    }} />
+                                                        marginLeft: '1.2rem'
+                                                    }}
+                                                        onClick={() => setEditSubtask({ ...editSubtask, del: false })}
+                                                    />
+                                                </Box>) : (<>
+                                                    <FormControlLabel
+                                                        id={index}
+                                                        sx={{
+                                                            width: '182px',
+                                                            marginLeft: '1rem'
+
+                                                        }}
+                                                        control={
+                                                            <Checkbox
+                                                                checked={item.mark_done}
+                                                                onChange={(event) => {
+                                                                    const tempArray = [...textArray];
+                                                                    tempArray[index] = { title: item.title, mark_done: event.target.checked };
+                                                                    setTextArray(tempArray);
+                                                                    setEditSubtask({
+                                                                        id: textArray.indexOf(item),
+                                                                        title: item.title,
+                                                                        mark_done: event.target.checked,
+                                                                        del: false
+                                                                    })
+                                                                }}
+                                                                sx={{
+                                                                    color: 'green',
+                                                                    '&.Mui-checked': {
+                                                                        color: 'green',
+                                                                    },
+                                                                }} />
+                                                        }
+
+                                                        label="Mark Done"
+                                                        labelPlacement="end"
+                                                    />
+                                                    <Divider orientation='vertical' flexItem />
+                                                    <DeleteIcon
+                                                        onClick={() => {
+                                                            console.log('click');
+                                                            setEditSubtask({
+                                                                ...editSubtask,
+                                                                id: index,
+                                                                del: true
+                                                            })
+                                                        }}
+                                                        sx={{
+                                                            width: '60px',
+                                                            color: 'red',
+                                                            ':hover': { color: '#7e1c1c' },
+                                                            transition: '0.2s',
+                                                            cursor: 'pointer',
+                                                        }} />
+                                                </>)}
                                             </Box>
                                         </Box>
                                         <Divider />
@@ -255,8 +313,8 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         }}
                         required={true}
                         autoComplete='off'
-                        value={editSubtask}
-                        onChange={(event) => setEditSubtask(event.target.value)}
+                        value={editSubtask.title}
+                        onChange={(event) => setEditSubtask({ ...editSubtask, title: event.target.value })}
                         autoFocus
                     />
                 </DialogContent>
@@ -277,10 +335,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                     }} onClick={() => {
                         setEditTitle(false);
                         const tempArray = [...textArray];
-                        const index = tempArray.findIndex((element, index) => element === currSubtask);
-                        console.log(index);
-                        tempArray[index] = editSubtask;
-                        console.log(tempArray);
+                        tempArray[editSubtask.id] = { title: editSubtask.title, mark_done: editSubtask.mark_done };
                         setTextArray(tempArray);
                     }}>
                         confirm
