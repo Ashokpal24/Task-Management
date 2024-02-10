@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -29,7 +29,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 export default function AddSubtaskDialog({ open, setOpen }) {
 
     const [editTitle, setEditTitle] = useState(false)
-    const [delSubtask, setDelSubtask] = useState(false)
+    const [subtaskTitle, SetSubtaskTitle] = useState('')
     const [textArray, setTextArray] = useState([
         { title: 'Subtask 1', mark_done: false },
         { title: 'Subtask 2', mark_done: false },
@@ -43,13 +43,21 @@ export default function AddSubtaskDialog({ open, setOpen }) {
         { title: 'Subtask 10', mark_done: false },
     ])
     const [editSubtask, setEditSubtask] = useState({})
+    const scrollValue = useRef(0)
+    const scrollRef = useRef(null)
 
     const handleClose = () => {
         setOpen(false);
         setEditTitle(false);
     };
 
+
     const AddSubtaskComponent = () => {
+        useEffect(() => {
+            // console.log(scrollValue.current);
+            scrollRef.current.scrollTop = scrollValue.current
+        }, [])
+
         return (
             <>
                 <DialogTitle id="alert-dialog-title" sx={{
@@ -78,6 +86,8 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         width: '90%'
                     }}>
                         <CustomTextField id="task-input"
+                            value={subtaskTitle}
+                            onChange={(event) => SetSubtaskTitle(event.target.value)}
                             label="Title"
                             variant="outlined"
                             sx={{
@@ -87,6 +97,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                             }}
                             required={true}
                             autoComplete='off'
+                            autoFocus
                         />
                         <Button
                             color='inherit'
@@ -99,16 +110,22 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                 width: "200px",
                                 height: '55px'
                             }}
-                        // onClick={(event) => setSubtaskOpen(true)}
+                            onClick={(event) => {
+                                const tempArray = [...textArray];
+                                tempArray.push({ title: subtaskTitle, mark_done: false })
+                                setTextArray(tempArray);
+                            }}
                         >
                             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
                             Add more Subtask
                         </Button>
                     </Box>
                     <Divider />
-                    <Box
+                    <div
                         sx={{ width: '600px', alignSelf: 'center' }}>
                         <List
+                            ref={scrollRef}
+                            onScroll={(event) => scrollValue.current = event.target.scrollTop}
                             sx={{
                                 overflowY: 'scroll',
                                 maxHeight: '200px',
@@ -248,7 +265,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                 ))
                             }
                         </List>
-                    </Box>
+                    </div>
                     <Divider />
                     <Box sx={{
                         display: 'flex',
