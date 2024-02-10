@@ -28,7 +28,7 @@ const HeroPage = () => {
     const [profile, setProfile] = useState([])
     const [project, setProject] = useState([])
     const [taskOpen, setTaskOpen] = useState(false);
-    const [subtaskOpen, setSubtaskOpen] = useState(false);
+    const [subtaskOpen, setSubtaskOpen] = useState({ status: false, task_id: null });
 
     const token = loadJWTToken()
     const navigateTo = useNavigate()
@@ -47,6 +47,7 @@ const HeroPage = () => {
         getProfileData()
     }, [])
 
+    useEffect(() => { console.log(project) }, [project])
     const getProjectData = () => {
         getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
     }
@@ -54,6 +55,15 @@ const HeroPage = () => {
     const getProfileData = () => {
         getDataList({ token: token, setList: setProfile, URL: profileURL })
 
+    }
+
+    const getSubtaskList = ({ taskId }) => {
+        if (project[0] != undefined && taskId != undefined) {
+            const temp = project[0].task.filter((item, index) => item.id == taskId)
+            // console.log(temp[0].subtasks)
+            return temp[0].subtasks
+        }
+        return []
     }
 
     const formatTaskData = ({ projectObj }) => {
@@ -185,8 +195,11 @@ const HeroPage = () => {
                             getProjectData={getProjectData} />
 
                         <AddSubtaskDialog
-                            open={subtaskOpen}
+                            open={subtaskOpen.status}
                             setOpen={setSubtaskOpen}
+                            token={token}
+                            subtaskList={getSubtaskList({ taskId: subtaskOpen.task_id })}
+                            taskId={subtaskOpen.task_id}
                         />
                     </>
 

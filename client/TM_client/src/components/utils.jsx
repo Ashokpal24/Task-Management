@@ -9,7 +9,7 @@ const loginURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.githu
 const registerURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/register/'
 const projectURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/project/'
 const taskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
-const subtaskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/task/'
+const subtaskURL = 'https://psychic-space-broccoli-gw7pwwx7grr3p7v7-8000.app.github.dev/subtask/'
 
 
 const CustomTextField = styled(TextField)({

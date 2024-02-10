@@ -290,10 +290,15 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
                     alignItems: "center"
                   }}>
                     <MenuIcon sx={{
-                      color: "#ccc", marginBottom: "0.5rem",
+                      color: "#ccc",
+                      ":hover": { color: "black" },
+                      transition: "0.2s",
+                      marginBottom: "0.5rem",
                       marginRight: "0.5rem",
                       cursor: "pointer",
-                    }} />
+                    }}
+                      onClick={(event) => setSubtaskOpen({ status: true, task_id: item.id })}
+                    />
                     <Typography sx={{
                       pointerEvents: "none",
                       fontSize: "12px",
@@ -345,7 +350,7 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
                     width: "65%",
                     textAlign: "center"
                   }}
-                  onClick={(event) => setSubtaskOpen(true)}
+                  onClick={(event) => setSubtaskOpen({ status: true, task_id: null })}
                 >
                   <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
                   Add Subtasks

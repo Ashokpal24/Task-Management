@@ -7,7 +7,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Alert
+    Alert,
+    Divider
 } from '@mui/material';
 import { taskURL, CustomTextField } from '../utils';
 
@@ -43,7 +44,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     setALertMessage('Title field should not be empty 😢')
                 }
                 console.log(errorData)
-                return; l
+                return;
             }
             const data = await response.json();
             console.log(data);
@@ -56,6 +57,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
             console.error("An error occurred during login:", error);
         }
     }
+
     return (
 
         <Dialog
@@ -67,10 +69,11 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 fontSize: "24px",
                 fontWeight: "600",
                 paddingBottom: 0,
-                marginBottom: '0.2rem',
+                marginBottom: '1rem',
             }}>
                 Add Task
             </DialogTitle>
+            <Divider />
             <DialogContent sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -86,7 +89,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     variant="outlined"
                     sx={{
                         marginTop: "0.5rem",
-                        marginBottom: '0.2rem',
+                        marginBottom: '0.5rem',
                     }}
                     required={true}
                     autoComplete='off'
@@ -99,6 +102,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     </Box>
                 ) : <></>}
             </DialogContent>
+            <Divider />
             <DialogActions sx={{
                 display: "flex",
                 flexDirection: "column"

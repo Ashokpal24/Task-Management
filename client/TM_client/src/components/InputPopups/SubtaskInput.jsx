@@ -19,38 +19,118 @@ import {
     TextField
 } from '@mui/material';
 
-import { CustomTextField } from '../utils';
+import { CustomTextField, subtaskURL } from '../utils';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-export default function AddSubtaskDialog({ open, setOpen }) {
+// Dummy textArray
+// { title: 'Subtask 1', mark_done: false },
+// { title: 'Subtask 2', mark_done: false },
+// { title: 'Subtask 3', mark_done: false },
+// { title: 'Subtask 4', mark_done: false },
+// { title: 'Subtask 5', mark_done: false },
+// { title: 'Subtask 6', mark_done: false },
+// { title: 'Subtask 7', mark_done: false },
+// { title: 'Subtask 8', mark_done: false },
+// { title: 'Subtask 9', mark_done: false },
+// { title: 'Subtask 10', mark_done: false },
+
+export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, taskId }) {
 
     const [editTitle, setEditTitle] = useState(false)
     const [subtaskTitle, SetSubtaskTitle] = useState('')
-    const [textArray, setTextArray] = useState([
-        { title: 'Subtask 1', mark_done: false },
-        { title: 'Subtask 2', mark_done: false },
-        { title: 'Subtask 3', mark_done: false },
-        { title: 'Subtask 4', mark_done: false },
-        { title: 'Subtask 5', mark_done: false },
-        { title: 'Subtask 6', mark_done: false },
-        { title: 'Subtask 7', mark_done: false },
-        { title: 'Subtask 8', mark_done: false },
-        { title: 'Subtask 9', mark_done: false },
-        { title: 'Subtask 10', mark_done: false },
-    ])
+    const [textArray, setTextArray] = useState([])
     const [editSubtask, setEditSubtask] = useState({})
     const scrollValue = useRef(0)
     const scrollRef = useRef(null)
 
+    useEffect(() => {
+        console.log(subtaskList)
+        if (subtaskList != undefined && open == true) {
+            setTextArray(subtaskList)
+        }
+        else if (subtaskList == undefined && open == true) {
+            setTextArray([]);
+        }
+    }, [subtaskList])
+
     const handleClose = () => {
-        setOpen(false);
+        setOpen({ status: false, task_id: null });
         setEditTitle(false);
     };
 
+
+    const handleAddSubtask = async ({ sTitle }) => {
+
+        try {
+            const response = await fetch(subtaskURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token.accessToken
+                },
+                body: JSON.stringify({ title: sTitle, task: taskId })
+
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // if (errorData.hasOwnProperty('title')) {
+                //     setStatus('error')
+                //     setALertMessage('Title field should not be empty 😢')
+                // }
+                console.log(errorData)
+                return;
+            }
+            const data = await response.json();
+            console.log(data);
+            // setStatus('success')
+            // setALertMessage('Task added Successful😄')
+            // setTimeout(() => setOpen(false), 1000)
+            // getProjectData()
+        }
+        catch (error) {
+            console.error("An error occurred during login:", error);
+        }
+    }
+
+
+    const handleUpdateSubtask = async ({ updatedData, subtaskId }) => {
+
+        try {
+            const response = await fetch(subtaskURL + subtaskId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token.accessToken
+                },
+                body: JSON.stringify({ ...updatedData })
+
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // if (errorData.hasOwnProperty('title')) {
+                //     setStatus('error')
+                //     setALertMessage('Title field should not be empty 😢')
+                // }
+                console.log(errorData)
+                return;
+            }
+            const data = await response.json();
+            console.log(data);
+            // setStatus('success')
+            // setALertMessage('Task added Successful😄')
+            // setTimeout(() => setOpen(false), 1000)
+            // getProjectData()
+        }
+        catch (error) {
+            console.error("An error occurred during login:", error);
+        }
+    }
 
     const AddSubtaskComponent = () => {
         useEffect(() => {
@@ -83,7 +163,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         alignItems: 'center',
                         marginLeft: '1rem',
                         marginRight: '1rem',
-                        width: '90%'
+                        width: '584px'
                     }}>
                         <CustomTextField id="task-input"
                             value={subtaskTitle}
@@ -114,6 +194,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                 const tempArray = [...textArray];
                                 tempArray.push({ title: subtaskTitle, mark_done: false })
                                 setTextArray(tempArray);
+                                handleAddSubtask({ sTitle: subtaskTitle })
                             }}
                         >
                             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
@@ -135,7 +216,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         >
                             {
                                 textArray.map((item, index) => (
-                                    <div key={index}>
+                                    <div key={item.id}>
                                         <Box
                                             sx={{
                                                 width: '100%',
@@ -161,7 +242,8 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                 onClick={() => {
                                                     setEditTitle(true);
                                                     setEditSubtask({
-                                                        id: textArray.indexOf(item),
+                                                        id: item.id,
+                                                        index:index,
                                                         title: item.title,
                                                         mark_done: item.mark_done,
                                                         del: false
@@ -218,13 +300,23 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                                                                 checked={item.mark_done}
                                                                 onChange={(event) => {
                                                                     const tempArray = [...textArray];
-                                                                    tempArray[index] = { title: item.title, mark_done: event.target.checked };
+                                                                    tempArray[index] = {
+                                                                        id: item.id,
+                                                                        index: index,
+                                                                        title: item.title,
+                                                                        mark_done: event.target.checked
+                                                                    };
                                                                     setTextArray(tempArray);
                                                                     setEditSubtask({
-                                                                        id: textArray.indexOf(item),
+                                                                        id: item.id,
+                                                                        index: index,
                                                                         title: item.title,
                                                                         mark_done: event.target.checked,
                                                                         del: false
+                                                                    })
+                                                                    handleUpdateSubtask({
+                                                                        updatedData: { mark_done: event.target.checked },
+                                                                        subtaskId: item.id
                                                                     })
                                                                 }}
                                                                 sx={{
@@ -300,7 +392,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
 
     const EditSubtaskComponent = () => {
         return (
-            <>
+            <Box sx={{ width: '600px' }}>
                 <DialogTitle id="alert-dialog-title" sx={{
                     fontSize: "24px",
                     fontWeight: "600",
@@ -313,12 +405,11 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                 <DialogContent sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'start',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     marginLeft: '1rem',
                     marginRight: '1rem',
                     padding: 0,
-                    width: '90%'
                 }}>
                     <CustomTextField id="task-input"
                         label="Title"
@@ -326,7 +417,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         sx={{
                             marginTop: "0.5rem",
                             marginBottom: '0.5rem',
-                            width: '300px'
+                            width: '100%'
                         }}
                         required={true}
                         autoComplete='off'
@@ -352,7 +443,12 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                     }} onClick={() => {
                         setEditTitle(false);
                         const tempArray = [...textArray];
-                        tempArray[editSubtask.id] = { title: editSubtask.title, mark_done: editSubtask.mark_done };
+                        tempArray[editSubtask.index] = {
+                            id: editSubtask.id,
+                            index: editSubtask.index,
+                            title: editSubtask.title,
+                            mark_done: editSubtask.mark_done
+                        };
                         setTextArray(tempArray);
                     }}>
                         confirm
@@ -366,7 +462,7 @@ export default function AddSubtaskDialog({ open, setOpen }) {
                         Close
                     </Button>
                 </DialogActions>
-            </>
+            </Box>
         )
     }
     return (
