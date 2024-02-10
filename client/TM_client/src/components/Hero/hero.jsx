@@ -200,6 +200,7 @@ const HeroPage = () => {
                             token={token}
                             subtaskList={getSubtaskList({ taskId: subtaskOpen.task_id })}
                             taskId={subtaskOpen.task_id}
+                            getProjectData={getProjectData}
                         />
                     </>
 

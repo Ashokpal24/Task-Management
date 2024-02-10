@@ -38,7 +38,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // { title: 'Subtask 9', mark_done: false },
 // { title: 'Subtask 10', mark_done: false },
 
-export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, taskId }) {
+export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, taskId, getProjectData }) {
 
     const [editTitle, setEditTitle] = useState(false)
     const [subtaskTitle, SetSubtaskTitle] = useState('')
@@ -90,7 +90,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setStatus('success')
             // setALertMessage('Task added Successful😄')
             // setTimeout(() => setOpen(false), 1000)
-            // getProjectData()
+            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
@@ -125,13 +125,44 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setStatus('success')
             // setALertMessage('Task added Successful😄')
             // setTimeout(() => setOpen(false), 1000)
-            // getProjectData()
+            getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
         }
     }
 
+    const handleDelSubtask = async ({ subtaskId }) => {
+
+        try {
+            const response = await fetch(subtaskURL + subtaskId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token.accessToken
+                },
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                // if (errorData.hasOwnProperty('title')) {
+                //     setStatus('error')
+                //     setALertMessage('Title field should not be empty 😢')
+                // }
+                console.log(errorData)
+                return;
+            }
+            const data = await response.json();
+            console.log(data);
+            // setStatus('success')
+            // setALertMessage('Task added Successful😄')
+            // setTimeout(() => setOpen(false), 1000)
+            getProjectData()
+        }
+        catch (error) {
+            console.error("An error occurred during login:", error);
+        }
+    }
     const AddSubtaskComponent = () => {
         useEffect(() => {
             // console.log(scrollValue.current);
@@ -243,7 +274,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                                                     setEditTitle(true);
                                                     setEditSubtask({
                                                         id: item.id,
-                                                        index:index,
+                                                        index: index,
                                                         title: item.title,
                                                         mark_done: item.mark_done,
                                                         del: false
@@ -278,6 +309,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                                                             tempArray.splice(index, 1)
                                                             setTextArray(tempArray);
                                                             setEditSubtask({})
+                                                            handleDelSubtask({ subtaskId: item.id })
                                                         }}
                                                     />
                                                     <CancelIcon sx={{
@@ -443,13 +475,12 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                     }} onClick={() => {
                         setEditTitle(false);
                         const tempArray = [...textArray];
-                        tempArray[editSubtask.index] = {
-                            id: editSubtask.id,
-                            index: editSubtask.index,
-                            title: editSubtask.title,
-                            mark_done: editSubtask.mark_done
-                        };
+                        tempArray[editSubtask.index] = { ...editSubtask };
                         setTextArray(tempArray);
+                        handleUpdateSubtask({
+                            updatedData: { title: editSubtask.title, },
+                            subtaskId: editSubtask.id
+                        })
                     }}>
                         confirm
                     </Button>
