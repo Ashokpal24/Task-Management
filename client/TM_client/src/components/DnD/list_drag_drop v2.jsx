@@ -17,20 +17,22 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import MenuIcon from '@mui/icons-material/Menu';
-import { formatToDMY } from "../utils";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { formatToDMY, taskURL } from "../utils";
 // Test
 // 
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 
-const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
+const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProjectData }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
-
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
-
+  const [delTask, setDelTask] = useState({ status: false, taskId: null });
   const mouseEnterID = useRef(null);
 
   useEffect(() => {
@@ -46,6 +48,32 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   });
+
+  const delItem = async ({ token, Id }) => {
+
+    try {
+      const response = await fetch(taskURL + Id, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token.accessToken
+        },
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData)
+        return;
+      }
+      const data = await response.json();
+      console.log(data);
+      // setDelTask(false);
+      getProjectData();
+    }
+    catch (error) {
+      console.error("An error occurred during deleting:", error);
+    }
+  }
 
   const handleMouseUp = (event) => {
     var ghost = document.getElementById("drag-ghost");
@@ -356,12 +384,65 @@ const DnDComponent = ({ listData, setTaskOpen, setSubtaskOpen }) => {
                   Add Subtasks
                 </Button>
               </div>)}
-              <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
+              {/* <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
                 backgroundColor: "#fff2f2",
                 color: "#ff9696",
                 fontWeight: "600",
                 userSelect: "none"
-              }} />
+              }} /> */}
+              <Box sx={{
+                // height: '50px',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <Chip label={formatToDMY({ dateString: item.created_at })} color="primary" sx={{
+                  backgroundColor: "#fff2f2",
+                  color: "#ff9696",
+                  fontWeight: "600",
+                  userSelect: "none"
+                }} />
+                {/* <Typography sx={{ marginLeft: '1rem' }}>Confirm Delete ?</Typography> */}
+
+                <Box>
+                  {(delTask.status) && (delTask.taskId == item.id) ?
+
+                    (<>
+                      <CheckCircleIcon sx={{
+                        ':hover': { color: 'green' },
+                        transition: '0.2s',
+                        marginLeft: '1.2rem'
+                      }}
+                        onClick={() => {
+                          delItem({ token: token, Id: item.id });
+
+                        }}
+                      />
+                      <CancelIcon sx={{
+                        ':hover': { color: '#7e1c1c' },
+                        transition: '0.2s',
+                        marginLeft: '1.2rem'
+                      }}
+                        onClick={() => {
+                          setDelTask({ status: false, taskId: item.id })
+                        }}
+                      />
+                    </>) :
+                    (<DeleteIcon
+                      onClick={() => {
+                        setDelTask({ status: true, taskId: item.id })
+                      }}
+                      sx={{
+                        width: '60px',
+                        color: 'red',
+                        ':hover': { color: '#7e1c1c' },
+                        transition: '0.2s',
+                        cursor: 'pointer',
+                      }} />)}
+                </Box>
+
+              </Box>
             </Box>
 
           </CardActions>

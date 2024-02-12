@@ -107,7 +107,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             setALertMessage('Subtask added Successful😄')
         }
         catch (error) {
-            console.error("An error occurred during login:", error);
+            console.error("An error occurred during adding subtask:", error);
         }
     }
 
@@ -152,7 +152,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setTimeout(() => setOpen(false), 1000)
         }
         catch (error) {
-            console.error("An error occurred during login:", error);
+            console.error("An error occurred during update:", error);
         }
     }
 
@@ -187,7 +187,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             // setTimeout(() => setOpen(false), 1000)
         }
         catch (error) {
-            console.error("An error occurred during login:", error);
+            console.error("An error occurred during deleting:", error);
         }
     }
     const AddSubtaskComponent = () => {

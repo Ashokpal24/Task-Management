@@ -81,6 +81,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 alignItems: 'center',
                 marginLeft: '1rem',
                 marginRight: '1rem',
+                width: '568px',
                 padding: 0
 
             }}>
@@ -88,6 +89,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     label="Title"
                     variant="outlined"
                     sx={{
+                        width: '100%',
                         marginTop: "0.5rem",
                         marginBottom: '0.5rem',
                     }}
@@ -105,14 +107,15 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
             <Divider />
             <DialogActions sx={{
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
+
             }}>
 
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    width: '100%',
+                    width: '90%',
                 }}>
                     <Button color='inherit' sx={{
                         color: "black",
@@ -125,7 +128,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "600",
-                        marginRight: '0.5rem'
+                        // marginRight: '0.5rem'
                     }} onClick={handleClose} autoFocus>
                         Close
                     </Button>

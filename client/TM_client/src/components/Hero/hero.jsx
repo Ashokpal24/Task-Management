@@ -209,6 +209,8 @@ const HeroPage = () => {
                     listData={formatTaskData({ projectObj: project })}
                     setTaskOpen={setTaskOpen}
                     setSubtaskOpen={setSubtaskOpen}
+                    token={token}
+                    getProjectData={getProjectData}
                 />
             </Box>
         </Box >
