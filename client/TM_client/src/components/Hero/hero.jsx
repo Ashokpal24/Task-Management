@@ -27,7 +27,7 @@ const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
     const [profile, setProfile] = useState([])
     const [project, setProject] = useState([])
-    const [taskOpen, setTaskOpen] = useState(false);
+    const [taskOpen, setTaskOpen] = useState({ status: false, type: 'add', taskId: null, title: '' });
     const [subtaskOpen, setSubtaskOpen] = useState({ status: false, task_id: null });
 
     const token = loadJWTToken()
@@ -188,11 +188,15 @@ const HeroPage = () => {
                 {project.length > 0 ? (
                     <>
                         < AddTaskDialog
-                            open={taskOpen}
+                            open={taskOpen.status}
                             setOpen={setTaskOpen}
                             token={token}
                             projectId={project[0].id}
-                            getProjectData={getProjectData} />
+                            getProjectData={getProjectData}
+                            type={taskOpen.type}
+                            taskId={taskOpen.taskId}
+                            title={taskOpen.title}
+                        />
 
                         <AddSubtaskDialog
                             open={subtaskOpen.status}

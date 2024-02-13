@@ -21,7 +21,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MenuIcon from '@mui/icons-material/Menu';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { formatToDMY, taskURL } from "../utils";
+import AddTaskDialog from "../InputPopups/TaskInput";
 // Test
 // 
 // ["Task 6", "Task 7"],
@@ -33,6 +35,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
   const [delTask, setDelTask] = useState({ status: false, taskId: null });
+
   const mouseEnterID = useRef(null);
 
   useEffect(() => {
@@ -84,6 +87,9 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
     }
   };
 
+  const handleSetOpen = ({ status, type, taskId, title }) => {
+    setTaskOpen({ status: status, type: type, taskId: taskId, title: title })
+  }
   const updateList = ({ indexes }) => {
     var newList = [];
     const tempList = [...ListContainer1];
@@ -169,7 +175,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
   };
 
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
-    const clone = event.target.parentNode.cloneNode(true);
+    const clone = event.target.parentNode.parentNode.cloneNode(true);
     SetIsDragging(true);
     SetDraggedItem(item);
     event.target.parentNode.remove();
@@ -245,7 +251,10 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
                 pointerEvents: "none",
                 fontSize: "16px",
                 fontWeight: "600",
-              }}>
+              }}
+                noWrap={true}
+
+              >
                 {item.title}
               </Typography>
               <Typography
@@ -429,17 +438,37 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
                         }}
                       />
                     </>) :
-                    (<DeleteIcon
-                      onClick={() => {
-                        setDelTask({ status: true, taskId: item.id })
-                      }}
-                      sx={{
-                        width: '60px',
-                        color: 'red',
-                        ':hover': { color: '#7e1c1c' },
-                        transition: '0.2s',
-                        cursor: 'pointer',
-                      }} />)}
+                    (
+                      <Box sx={{
+                        // height: '50px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}>
+                        <EditIcon
+                          sx={{
+                            color: 'blueviolet',
+                            width: '40%',
+                            ':hover': { color: 'violet' },
+                            transition: '0.2s',
+                            cursor: 'pointer'
+                          }}
+                          onClick={(event) => handleSetOpen({ status: true, type: 'edit', taskId: item.id, title: item.title })}
+                        />
+                        <DeleteIcon
+                          onClick={() => {
+                            setDelTask({ status: true, taskId: item.id })
+                          }}
+                          sx={{
+                            width: '60px',
+                            color: 'red',
+                            ':hover': { color: '#7e1c1c' },
+                            transition: '0.2s',
+                            cursor: 'pointer',
+                          }} />
+                      </Box>
+                    )}
                 </Box>
 
               </Box>
@@ -527,7 +556,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
               width: "40%",
               textAlign: "center"
             }}
-            onClick={(event) => setTaskOpen(true)}
+            onClick={(event) => handleSetOpen({ status: true, type: 'add', taskId: null, title: '' })}
           >
             <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
             Add task

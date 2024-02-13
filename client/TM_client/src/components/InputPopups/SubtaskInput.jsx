@@ -44,15 +44,13 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
     const [subtaskTitle, SetSubtaskTitle] = useState('')
     const [textArray, setTextArray] = useState([])
     const [editSubtask, setEditSubtask] = useState({})
-    const [status, setStatus] = useState('')
-    const [alertMessage, setALertMessage] = useState('')
+    const [status, setStatus] = useState('info')
+    const [alertMessage, setALertMessage] = useState('Add or Edit subtask 🗒️.')
     const scrollValue = useRef(0)
     const scrollRef = useRef(null)
 
     useEffect(() => {
         console.log(subtaskList)
-        setStatus('info')
-        setALertMessage('Add or Edit subtask 🗒️.')
         if (subtaskList != undefined && open == true) {
             setTextArray(subtaskList)
         }
@@ -62,8 +60,6 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
         else {
             SetSubtaskTitle('');
             setEditSubtask({})
-            setStatus('')
-            setALertMessage('')
         }
     }, [subtaskList])
 
@@ -473,11 +469,9 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                         autoFocus
                     />
                 </DialogContent>
-                {alertMessage != '' ? (
-                    <Box sx={{ width: '100%', marginBottom: '0.5rem', }}>
-                        <Alert severity={status}>{alertMessage}</Alert>
-                    </Box>
-                ) : <></>}
+                <Box sx={{ width: '100%', marginBottom: '0.5rem', }}>
+                    <Alert severity={status}>{alertMessage}</Alert>
+                </Box>
                 <Divider />
                 <DialogActions sx={{
                     display: 'flex',

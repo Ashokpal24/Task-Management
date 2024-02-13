@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -14,16 +14,25 @@ import { taskURL, CustomTextField } from '../utils';
 
 
 
-export default function AddTaskDialog({ open, setOpen, token, projectId, getProjectData }) {
+export default function AddTaskDialog({ open, setOpen, token, projectId, getProjectData, type, taskId, title }) {
     const [taskTitle, setTaskTitle] = useState('')
-    const [status, setStatus] = useState('')
-    const [alertMessage, setALertMessage] = useState('')
+    const [status, setStatus] = useState('info')
+    const [alertMessage, setALertMessage] = useState('Add the title of task 🖊️.')
+    const [cardType, setCardType] = useState('add')
+
 
     const handleClose = () => {
-        setStatus('')
-        setALertMessage('')
-        setOpen(false);
+        setOpen({ status: false, type: type, taskId: null, title: '' });
     };
+
+    useEffect(() => {
+        setCardType(type)
+        setTaskTitle(title)
+        if (type == 'edit')
+            setALertMessage('Edit the title of task 🖊️.')
+    }, [type]);
+
+
     const handleAddTask = async () => {
 
         try {
@@ -50,11 +59,46 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
             console.log(data);
             setStatus('success')
             setALertMessage('Task added Successful😄')
-            setTimeout(() => setOpen(false), 1000)
+            setTimeout(() => handleClose(), 1000)
             getProjectData()
         }
         catch (error) {
             console.error("An error occurred during login:", error);
+        }
+    }
+
+    const handleUpdateSubtask = async ({ updatedData, taskId }) => {
+
+        try {
+            const response = await fetch(taskURL + taskId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token.accessToken
+                },
+                body: JSON.stringify({ ...updatedData })
+
+            })
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (errorData.hasOwnProperty('title')) {
+                    setStatus('error')
+                    setALertMessage('Title field should not be empty 😢')
+                }
+                console.log(errorData)
+                return;
+            }
+            const data = await response.json();
+            console.log(data)
+            setStatus('success')
+            setALertMessage('Task updated Successful😄')
+            setTimeout(() => handleClose(), 1000)
+            getProjectData()
+
+        }
+        catch (error) {
+            console.error("An error occurred during update:", error);
         }
     }
 
@@ -71,7 +115,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 paddingBottom: 0,
                 marginBottom: '1rem',
             }}>
-                Add Task
+                {cardType == 'add' ? "Add Task" : "Edit Task"}
             </DialogTitle>
             <Divider />
             <DialogContent sx={{
@@ -97,13 +141,13 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     autoComplete='off'
                     value={taskTitle}
                     onChange={(event) => setTaskTitle(event.target.value)}
+                    autoFocus
                 />
-                {alertMessage != '' ? (
-                    <Box sx={{ width: '100%' }}>
-                        <Alert severity={status}>{alertMessage}</Alert>
-                    </Box>
-                ) : <></>}
+
             </DialogContent>
+            <Box sx={{ width: '100%', marginBottom: '0.5rem' }}>
+                <Alert severity={status}>{alertMessage}</Alert>
+            </Box>
             <Divider />
             <DialogActions sx={{
                 display: "flex",
@@ -121,15 +165,25 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "600"
-                    }} onClick={handleAddTask}>
-                        Add
+                    }} onClick={() => {
+                        if (cardType == 'add') {
+                            handleAddTask()
+                        }
+                        else {
+                            handleUpdateSubtask({
+                                updatedData: { title: taskTitle, },
+                                taskId: taskId,
+                            })
+                        }
+                    }}>
+                        {cardType == 'add' ? "Add" : "Confirm"}
                     </Button>
                     <Button color='inherit' sx={{
                         color: "black",
                         fontSize: "16px",
                         fontWeight: "600",
                         // marginRight: '0.5rem'
-                    }} onClick={handleClose} autoFocus>
+                    }} onClick={handleClose} >
                         Close
                     </Button>
                 </Box>
