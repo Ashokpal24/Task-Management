@@ -48,6 +48,7 @@ const HeroPage = () => {
     }, [])
 
     useEffect(() => { console.log(project) }, [project])
+
     const getProjectData = () => {
         getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
     }

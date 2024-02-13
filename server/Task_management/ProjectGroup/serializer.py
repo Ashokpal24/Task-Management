@@ -27,3 +27,12 @@ class ProjectDetailedSerializer(serializers.ModelSerializer):
                             'task',
                             'created_at',
                             'updated_at']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Sorting data by updated_by field
+        sorted_data = data
+        sorted_data['task'] = sorted(
+            sorted_data['task'],
+            key=lambda x: x['updated_at'], reverse=True)
+        return sorted_data

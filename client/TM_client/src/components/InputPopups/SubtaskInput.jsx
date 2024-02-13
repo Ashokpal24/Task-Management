@@ -49,7 +49,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
     const scrollRef = useRef(null)
 
     useEffect(() => {
-        console.log(subtaskList)
+        // console.log(subtaskList)
         if (subtaskList != undefined && open == true) {
             setTextArray(subtaskList)
         }
@@ -233,7 +233,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                             onChange={(event) => {
                                 const temp = event.target.value;
                                 SetSubtaskTitle(temp);
-                                console.log(subtaskTitle);
+                                // console.log(subtaskTitle);
                             }}
                             autoFocus
                         />

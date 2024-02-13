@@ -35,17 +35,54 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
   const [delTask, setDelTask] = useState({ status: false, taskId: null });
-
   const mouseEnterID = useRef(null);
+  const newSecRef = useRef(null)
+
+  const section = {
+    0: 'New',
+    1: "Progress",
+    2: "QC",
+    3: "Completed"
+  }
 
   useEffect(() => {
     // console.log(listData)
     SetListContainer1(listData);
   }, [listData]);
 
+  const handleUpdateSubtask = async ({ updatedData, taskId }) => {
+
+    try {
+      const response = await fetch(taskURL + taskId, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token.accessToken
+        },
+        body: JSON.stringify({ ...updatedData })
+
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData)
+        return;
+      }
+      const data = await response.json();
+      console.log(data)
+
+    }
+    catch (error) {
+      console.error("An error occurred during update:", error);
+    }
+  }
   useEffect(() => {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    if (newSecRef.current != null) {
+      handleUpdateSubtask({ updatedData: { status: newSecRef.current.newSection }, taskId: newSecRef.current.item.id })
+      newSecRef.current = null
+    }
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -95,33 +132,42 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
     const tempList = [...ListContainer1];
     const mainIndex = indexes[0];
 
+
+
     tempList.forEach((listItem, index) => {
       // console.log(index);
       if (listItem.includes(draggedItem) && index != mainIndex) {
-        // console.log("cond 1");
+        // console.log("cond 1 remove item");
         const modifiedList = [...listItem];
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         newList.push(modifiedList);
       } else if (listItem.includes(draggedItem) && index == mainIndex) {
-        // console.log("cond 2");
+        // console.log("cond 2 remove and add in same section");
         const modifiedList = [...listItem];
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         modifiedList.splice(indexes[1], 0, draggedItem);
         newList.push(modifiedList);
+        newSecRef.current = { item: draggedItem, newSection: section[index]}
+
       } else if (
         listItem.includes(draggedItem) == false &&
         index == mainIndex
       ) {
-        console.log("cond 3");
+        // console.log("cond 3 remove and add in diff section");
         const modifiedList = [...listItem];
         modifiedList.splice(indexes[1], 0, draggedItem);
+        console.log(draggedItem.status, mainIndex)
         newList.push(modifiedList);
+        newSecRef.current = { item: draggedItem, newSection: section[index] }
+
       } else {
         // console.log("cond 4");
         newList.push([...listItem]);
       }
     });
+
     SetListContainer1(newList);
+
   };
 
   const handleMouseMove = (event) => {
