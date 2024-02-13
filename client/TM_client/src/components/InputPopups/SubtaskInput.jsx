@@ -41,7 +41,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, taskId, getProjectData }) {
 
     const [editTitle, setEditTitle] = useState(false)
-    const [subtaskTitle, SetSubtaskTitle] = useState('')
     const [textArray, setTextArray] = useState([])
     const [editSubtask, setEditSubtask] = useState({})
     const [status, setStatus] = useState('info')
@@ -58,7 +57,6 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             setTextArray([]);
         }
         else {
-            SetSubtaskTitle('');
             setEditSubtask({})
         }
     }, [subtaskList])
@@ -187,6 +185,8 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
         }
     }
     const AddSubtaskComponent = () => {
+        const [subtaskTitle, SetSubtaskTitle] = useState('')
+
         useEffect(() => {
             // console.log(scrollValue.current);
             scrollRef.current.scrollTop = scrollValue.current
@@ -220,17 +220,21 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                         width: '584px'
                     }}>
                         <CustomTextField id="task-input"
-                            value={subtaskTitle}
-                            onChange={(event) => SetSubtaskTitle(event.target.value)}
                             label="Title"
                             variant="outlined"
                             sx={{
+                                width: '300px',
                                 marginTop: "0.5rem",
-                                marginBottom: '0.5rem',
-                                width: '300px'
+                                marginBottom: '0.5rem'
                             }}
                             required={true}
                             autoComplete='off'
+                            value={subtaskTitle}
+                            onChange={(event) => {
+                                const temp = event.target.value;
+                                SetSubtaskTitle(temp);
+                                console.log(subtaskTitle);
+                            }}
                             autoFocus
                         />
                         <Button

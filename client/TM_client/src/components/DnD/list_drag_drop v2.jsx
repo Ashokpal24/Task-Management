@@ -175,7 +175,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
   };
 
   const handleMouseDown = ({ event, item, datalist, setDataList }) => {
-    const clone = event.target.parentNode.parentNode.cloneNode(true);
+    const clone = event.target.parentNode.cloneNode(true);
     SetIsDragging(true);
     SetDraggedItem(item);
     event.target.parentNode.remove();
@@ -387,7 +387,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
                     width: "65%",
                     textAlign: "center"
                   }}
-                  onClick={(event) => setSubtaskOpen({ status: true, task_id: null })}
+                  onClick={(event) => setSubtaskOpen({ status: true, task_id: item.id })}
                 >
                   <AddCircleTwoToneIcon sx={{ marginBottom: "0.2rem" }} />
                   Add Subtasks

@@ -118,7 +118,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 {cardType == 'add' ? "Add Task" : "Edit Task"}
             </DialogTitle>
             <Divider />
-            <DialogContent sx={{
+            <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'start',
@@ -144,7 +144,7 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                     autoFocus
                 />
 
-            </DialogContent>
+            </Box>
             <Box sx={{ width: '100%', marginBottom: '0.5rem' }}>
                 <Alert severity={status}>{alertMessage}</Alert>
             </Box>
