@@ -147,7 +147,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         modifiedList.splice(indexes[1], 0, draggedItem);
         newList.push(modifiedList);
-        newSecRef.current = { item: draggedItem, newSection: section[index]}
+        newSecRef.current = { item: draggedItem, newSection: section[index] }
 
       } else if (
         listItem.includes(draggedItem) == false &&
@@ -628,10 +628,12 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
     <div
       className="task-container"
       style={{
+        width: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignContent: "first",
+        alignItems: "center"
+        // alignContent: "center",
       }}
     >
       {listSections.map((label, index) => (

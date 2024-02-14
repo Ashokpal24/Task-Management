@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
+import {
+    List,
+    ListItem,
+    ListItemButton
+} from "@mui/material";
 import Box from '@mui/system/Box';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CircularProgress from '@mui/material/CircularProgress';
 import DnDComponent from '../DnD/list_drag_drop v2.jsx';
-import "../../../static/index.css";
 import AddTaskDialog from "../InputPopups/TaskInput";
 import AddSubtaskDialog from '../InputPopups/SubtaskInput.jsx';
-
-
+import Drawer from '@mui/material/Drawer';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import "../../../static/index.css";
 import {
     loadJWTToken,
     deleteJWTToken,
@@ -29,7 +35,7 @@ const HeroPage = () => {
     const [project, setProject] = useState([])
     const [taskOpen, setTaskOpen] = useState({ status: false, type: 'add', taskId: null, title: '' });
     const [subtaskOpen, setSubtaskOpen] = useState({ status: false, task_id: null });
-
+    const [openDrawer, setOpenDrawer] = useState(false)
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -43,14 +49,14 @@ const HeroPage = () => {
             return
         }
         setShowPage(true)
-        getProjectData()
+        getProjectData({ Id: 1 })
         getProfileData()
     }, [])
 
-    useEffect(() => { console.log(project) }, [project])
+    useEffect(() => { console.log(profile) }, [profile])
 
-    const getProjectData = () => {
-        getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: 1 })
+    const getProjectData = ({ Id }) => {
+        getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: Id })
     }
 
     const getProfileData = () => {
@@ -175,16 +181,77 @@ const HeroPage = () => {
                 textAlign: "end",
                 color: "gray"
             }} >Welcome back👋 {profile.name}</Typography>
+            {(profile['name'] != undefined) ? (
+                <>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: "50%",
+                            left: "0.5%",
+                            height: "50%"
+                        }}
+                    >
+                        <ArrowForwardIosIcon
+                            sx={{
+                                position: 'sticky',
+                                top: "50%",
+                                color: "grey",
+                                ":hover": {
+                                    color: "black",
+                                    transform: "scale(2)"
+                                },
+                                transition: "0.2s",
+                            }}
+                            onClick={() => setOpenDrawer(true)}
+                        />
+                    </div>
+                    <Drawer
+                        anchor={"left"}
+                        open={openDrawer}
+                        onClose={() => setOpenDrawer(false)}
+                    >
+                        <List sx={{
+                            width: 250,
+
+                        }}>
+                            <Typography variant='h6'
+                                sx={{
+                                    marginLeft: "1rem",
+                                    userSelect: "none",
+                                    marginBottom: "0.2rem"
+                                }}>Projects</Typography>
+                            {profile["project_list"].map((item, index) => (
+                                <ListItemButton
+                                    key={item.id}
+                                    sx={{
+                                        color: "grey",
+                                        marginBottom: "0.2rem"
+                                    }}
+                                    onClick={() => getProjectData({ Id: item.id })}
+                                >
+                                    <SubdirectoryArrowRightIcon />
+                                    {item.title}
+                                </ListItemButton>
+                            ))}
+                        </List>
+
+                    </Drawer>
+                </>
+            ) : (<></>)}
+
             <Box
                 sx={{
-                    width: "1220px",
+                    width: "1200px",
                     margin: "0px",
                     padding: "0px",
                     alignSelf: "center",
                     marginLeft: "0.2rem",
-                    marginRight: "0.2rem"
+                    marginRight: "0.2rem",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'start'
                 }}
-
             >
                 {project.length > 0 ? (
                     <>
