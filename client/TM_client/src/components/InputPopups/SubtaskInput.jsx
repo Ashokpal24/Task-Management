@@ -38,7 +38,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // { title: 'Subtask 9', mark_done: false },
 // { title: 'Subtask 10', mark_done: false },
 
-export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, taskId, getProjectData }) {
+export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, projectId, taskId, getProjectData }) {
 
     const [editTitle, setEditTitle] = useState(false)
     const [textArray, setTextArray] = useState([])
@@ -66,7 +66,8 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
         scrollValue.current = 0
         scrollRef.current = null
         setOpen({ status: false, task_id: null });
-        getProjectData()
+        getProjectData({ Id: projectId })
+
     };
 
 
@@ -93,7 +94,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                 return;
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             const tempArray = [...textArray];
             tempArray.push(data)
             setTextArray(tempArray);
@@ -131,7 +132,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
             const data = await response.json();
             const tempArray = [...textArray];
             tempArray[index] = data;
-            console.log(tempArray)
+            // console.log(tempArray)
             setTextArray(tempArray);
             setEditSubtask({
                 id: data.id,
@@ -171,7 +172,7 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, ta
                 return;
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             const tempArray = [...textArray];
             tempArray.splice(index, 1)
             setTextArray(tempArray);

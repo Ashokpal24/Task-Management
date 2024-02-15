@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
@@ -36,6 +36,8 @@ const HeroPage = () => {
     const [taskOpen, setTaskOpen] = useState({ status: false, type: 'add', taskId: null, title: '' });
     const [subtaskOpen, setSubtaskOpen] = useState({ status: false, task_id: null });
     const [openDrawer, setOpenDrawer] = useState(false)
+    const openTempDrawer = useRef(false)
+
     const token = loadJWTToken()
     const navigateTo = useNavigate()
 
@@ -53,11 +55,17 @@ const HeroPage = () => {
         getProfileData()
     }, [])
 
-    useEffect(() => { console.log(profile) }, [profile])
+    useEffect(() => {
+        if (openTempDrawer.current == true) {
+            // console.log(project);
+            setOpenDrawer(true);
+        }
+    }, [project])
 
     const getProjectData = ({ Id }) => {
         getDataItem({ token: token, setItem: setProject, URL: projectURL, Id: Id })
     }
+
 
     const getProfileData = () => {
         getDataList({ token: token, setList: setProfile, URL: profileURL })
@@ -202,13 +210,19 @@ const HeroPage = () => {
                                 },
                                 transition: "0.2s",
                             }}
-                            onClick={() => setOpenDrawer(true)}
+                            onClick={() => {
+                                getProjectData({ Id: project[0].id });
+                                openTempDrawer.current = true;
+                            }}
                         />
                     </div>
                     <Drawer
                         anchor={"left"}
                         open={openDrawer}
-                        onClose={() => setOpenDrawer(false)}
+                        onClose={() => {
+                            setOpenDrawer(false);
+                            openTempDrawer.current = false;
+                        }}
                     >
                         <List sx={{
                             width: 250,
@@ -270,20 +284,23 @@ const HeroPage = () => {
                             open={subtaskOpen.status}
                             setOpen={setSubtaskOpen}
                             token={token}
+                            projectId={project[0].id}
                             subtaskList={getSubtaskList({ taskId: subtaskOpen.task_id })}
                             taskId={subtaskOpen.task_id}
+                            getProjectData={getProjectData}
+                        />
+                        <DnDComponent
+                            listData={formatTaskData({ projectObj: project })}
+                            projectId={project[0].id}
+                            setTaskOpen={setTaskOpen}
+                            setSubtaskOpen={setSubtaskOpen}
+                            token={token}
                             getProjectData={getProjectData}
                         />
                     </>
 
                 ) : (<></>)}
-                <DnDComponent
-                    listData={formatTaskData({ projectObj: project })}
-                    setTaskOpen={setTaskOpen}
-                    setSubtaskOpen={setSubtaskOpen}
-                    token={token}
-                    getProjectData={getProjectData}
-                />
+
             </Box>
         </Box >
 

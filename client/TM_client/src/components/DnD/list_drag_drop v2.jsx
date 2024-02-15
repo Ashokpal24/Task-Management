@@ -29,7 +29,7 @@ import AddTaskDialog from "../InputPopups/TaskInput";
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 
-const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProjectData }) => {
+const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen, getProjectData }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
   const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
   const [isDragging, SetIsDragging] = useState(false);
@@ -69,8 +69,8 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
         return;
       }
       const data = await response.json();
-      console.log(data)
-
+      // console.log(data)
+      // getProjectData({ Id: projectId });
     }
     catch (error) {
       console.error("An error occurred during update:", error);
@@ -106,9 +106,9 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
         return;
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       // setDelTask(false);
-      getProjectData();
+      getProjectData({ Id: projectId });
     }
     catch (error) {
       console.error("An error occurred during deleting:", error);
@@ -156,7 +156,7 @@ const DnDComponent = ({ token, listData, setTaskOpen, setSubtaskOpen, getProject
         // console.log("cond 3 remove and add in diff section");
         const modifiedList = [...listItem];
         modifiedList.splice(indexes[1], 0, draggedItem);
-        console.log(draggedItem.status, mainIndex)
+        console.log("status: ", draggedItem.status, "Section: ", mainIndex)
         newList.push(modifiedList);
         newSecRef.current = { item: draggedItem, newSection: section[index] }
 

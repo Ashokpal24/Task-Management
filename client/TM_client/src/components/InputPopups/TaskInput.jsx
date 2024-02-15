@@ -56,11 +56,11 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 return;
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             setStatus('success')
             setALertMessage('Task added Successful😄')
             setTimeout(() => handleClose(), 1000)
-            getProjectData()
+            getProjectData({ Id: projectId })
         }
         catch (error) {
             console.error("An error occurred during login:", error);
@@ -90,11 +90,11 @@ export default function AddTaskDialog({ open, setOpen, token, projectId, getProj
                 return;
             }
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
             setStatus('success')
             setALertMessage('Task updated Successful😄')
             setTimeout(() => handleClose(), 1000)
-            getProjectData()
+            getProjectData({ Id: projectId })
 
         }
         catch (error) {
