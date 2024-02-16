@@ -10,6 +10,7 @@ class TaskListSerializer(serializers.ModelSerializer):
         fields = ['id',
                   'title',
                   'status',
+                  'display_order',
                   'percentage',
                   'project_id',
                   'created_by',
@@ -30,6 +31,7 @@ class TaskDetailedSerializer(serializers.ModelSerializer):
         fields = ['id',
                   'title',
                   'status',
+                  'display_order',
                   'percentage',
                   'subtasks',
                   'project_id',
@@ -41,4 +43,4 @@ class TaskDetailedSerializer(serializers.ModelSerializer):
                             'created_at',
                             'updated_at']
 
-        ordering = ['updated_at']
+        ordering = ['display_order']

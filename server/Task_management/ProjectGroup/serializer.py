@@ -34,5 +34,5 @@ class ProjectDetailedSerializer(serializers.ModelSerializer):
         sorted_data = data
         sorted_data['task'] = sorted(
             sorted_data['task'],
-            key=lambda x: x['updated_at'], reverse=True)
+            key=lambda x: x['display_order'], reverse=False)
         return sorted_data

@@ -19,6 +19,8 @@ class Task(models.Model):
         verbose_name="Project ID",
         related_name='task_list'
     )
+    display_order = models.IntegerField(
+        verbose_name="Section Index", default=-1)
 
     created_by = models.ForeignKey(
         User,
