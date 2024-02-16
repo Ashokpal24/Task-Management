@@ -33,6 +33,7 @@ const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
     const [profile, setProfile] = useState([])
     const [project, setProject] = useState([])
+    const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
     const [taskOpen, setTaskOpen] = useState({ status: false, type: 'add', taskId: null, title: '' });
     const [subtaskOpen, setSubtaskOpen] = useState({ status: false, task_id: null });
     const [openDrawer, setOpenDrawer] = useState(false)
@@ -57,9 +58,9 @@ const HeroPage = () => {
 
     useEffect(() => {
         if (openTempDrawer.current == true) {
-            // console.log(project);
             setOpenDrawer(true);
         }
+        formatTaskData({ projectObj: project })
     }, [project])
 
     const getProjectData = ({ Id }) => {
@@ -107,8 +108,7 @@ const HeroPage = () => {
                         break;
                 }
             })
-        return taskList
-
+        SetListContainer1(taskList);
     }
     return !showPage ? (
         <div style={{
@@ -290,11 +290,12 @@ const HeroPage = () => {
                             getProjectData={getProjectData}
                         />
                         <DnDComponent
-                            listData={formatTaskData({ projectObj: project })}
+                            token={token}
+                            ListContainer1={ListContainer1}
+                            SetListContainer1={SetListContainer1}
                             projectId={project[0].id}
                             setTaskOpen={setTaskOpen}
                             setSubtaskOpen={setSubtaskOpen}
-                            token={token}
                             getProjectData={getProjectData}
                         />
                     </>

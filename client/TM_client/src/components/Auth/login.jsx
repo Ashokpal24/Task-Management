@@ -58,10 +58,10 @@ const LoginPage = ({ setAuthorized }) => {
 
 
     return (
-        <Box sx={{ ...flexStyle, width: '35%' }}>
+        <Box sx={{ ...flexStyle, width: '400px' }}>
             <h1>Welcome back 😄</h1>
             <p>Please enter email and password 💻</p>
-            <form>
+            <form style={{ width: "100%" }}>
                 <TextField
                     sx={{ marginBottom: '10px' }}
                     variant="outlined"

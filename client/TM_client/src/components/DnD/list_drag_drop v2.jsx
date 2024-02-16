@@ -29,9 +29,8 @@ import AddTaskDialog from "../InputPopups/TaskInput";
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 
-const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen, getProjectData }) => {
+const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, setTaskOpen, setSubtaskOpen, getProjectData }) => {
   var listSections = ["New task", "In progress", "Quality check", "Completed"]
-  const [ListContainer1, SetListContainer1] = useState([[], [], [], []]);
   const [isDragging, SetIsDragging] = useState(false);
   const [draggedItem, SetDraggedItem] = useState(null);
   const [delTask, setDelTask] = useState({ status: false, taskId: null });
@@ -45,10 +44,6 @@ const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen,
     3: "Completed"
   }
 
-  useEffect(() => {
-    // console.log(listData)
-    SetListContainer1(listData);
-  }, [listData]);
 
   const handleUpdateSubtask = async ({ updatedData, taskId }) => {
 
@@ -80,7 +75,15 @@ const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen,
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
     if (newSecRef.current != null) {
-      handleUpdateSubtask({ updatedData: { status: newSecRef.current.newSection }, taskId: newSecRef.current.item.id })
+      const tempIndex = newSecRef.current.newSection;
+      const tempID = newSecRef.current.item.id;
+      var newdisplayOrder = 0
+      ListContainer1[tempIndex].forEach((item, index) => {
+        if (item.id == tempID)
+          newdisplayOrder = index
+      })
+      console.log(newdisplayOrder)
+      handleUpdateSubtask({ updatedData: { status: section[tempIndex], display_order: newdisplayOrder }, taskId: tempID })
       newSecRef.current = null
     }
     return () => {
@@ -147,7 +150,7 @@ const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen,
         modifiedList.splice(modifiedList.indexOf(draggedItem), 1);
         modifiedList.splice(indexes[1], 0, draggedItem);
         newList.push(modifiedList);
-        newSecRef.current = { item: draggedItem, newSection: section[index] }
+        newSecRef.current = { item: draggedItem, newSection: index }
 
       } else if (
         listItem.includes(draggedItem) == false &&
@@ -158,7 +161,7 @@ const DnDComponent = ({ token, listData, projectId, setTaskOpen, setSubtaskOpen,
         modifiedList.splice(indexes[1], 0, draggedItem);
         console.log("status: ", draggedItem.status, "Section: ", mainIndex)
         newList.push(modifiedList);
-        newSecRef.current = { item: draggedItem, newSection: section[index] }
+        newSecRef.current = { item: draggedItem, newSection: index }
 
       } else {
         // console.log("cond 4");
