@@ -25,7 +25,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { formatToDMY, taskURL } from "../utils";
 import AddTaskDialog from "../InputPopups/TaskInput";
 // Test
-// 
 // ["Task 6", "Task 7"],
 // ["Task 8", "Task 9"],
 

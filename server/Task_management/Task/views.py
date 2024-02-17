@@ -15,37 +15,17 @@ class TaskUtils():
             return None
 
     def update_display_position(self, task_id, curr_index, curr_status):
-        taskIndexes = [x.display_order for x in Task.objects.filter(
+        taskIndexes = [x.id for x in Task.objects.filter(  # type: ignore
             status=curr_status
-        ).exclude(id=task_id)]
+        ).order_by('display_order').exclude(id=task_id)]
+
+        print(taskIndexes, task_id, curr_index)
+        taskIndexes.insert(curr_index, task_id)
         print(taskIndexes)
-        if (curr_index == 0):
-            print('cond 0')
-            tasks_to_update = Task.objects.filter(
-                status=curr_status
-            ).exclude(id=task_id)
-            for num, task in enumerate(tasks_to_update, 1):
-                task.display_order = num
-                task.save()
-        elif (curr_index-1 not in taskIndexes):
-            print('cond -1')
-            tasks_to_update = Task.objects.filter(
-                status=curr_status,
-                display_order=curr_index
-            ).exclude(id=task_id)
-            for task in tasks_to_update:
-                print(task.title, task.display_order)  # type: ignore
-                task.display_order = task.display_order-1
-                task.save()
-        else:
-            print('cond +1')
-            tasks_to_update = Task.objects.filter(
-                status=curr_status,
-                display_order__gte=curr_index
-            ).exclude(id=task_id)
-            for num, task in enumerate(tasks_to_update, 1):
-                task.display_order = task.display_order+1
-                task.save()
+        for idx, temp_id in enumerate(taskIndexes, 0):
+            task = Task.objects.get(id=temp_id)
+            task.display_order = idx
+            task.save()
 
 
 class TaskListView(APIView):
@@ -98,7 +78,12 @@ class TaskDetailedView(APIView, TaskUtils):
                 {"Msg": f"No Task of id {task_id} available"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        new_data = request.data
+        new_data = request.data.copy()
+        try:
+            new_data.pop('display_order')
+        except:
+            print('display order not found in request ,skipped')
+        print(new_data)
         serializer = TaskListSerializer(
             instance=task_instance,
             data=new_data,
@@ -117,7 +102,8 @@ class TaskDetailedView(APIView, TaskUtils):
                 curr_status=curr_status,
             )
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'msg': 'Done'}, status=status.HTTP_200_OK)
 
     def delete(self, request, task_id, *args, **kwargs):
         task_instance = self.get_object(task_id)
