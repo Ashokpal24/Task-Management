@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 
 import { CustomTextField, subtaskURL } from '../utils';
+import IconButton from '@mui/material/IconButton';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -295,11 +296,12 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, pr
                                             : (<> */}
                                             <ListItemButton sx={{ height: '50px', width: '280px' }}>{item.title}</ListItemButton>
                                             <Divider orientation='vertical' flexItem />
-                                            <EditIcon
+                                            <IconButton
                                                 sx={{
-                                                    color: 'blueviolet',
-                                                    width: '60px',
-                                                    ':hover': { color: 'violet' },
+                                                    color: 'cornflowerblue',
+                                                    marginLeft: "0.2rem",
+                                                    marginRight: "0.2rem",
+                                                    ':hover': { color: 'blueviolet' },
                                                     transition: '0.2s',
                                                     cursor: 'pointer'
                                                 }}
@@ -315,7 +317,10 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, pr
                                                         del: false
                                                     });
                                                 }}
-                                            />
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+
                                             {/* </>)} */}
                                             <Divider orientation='vertical' flexItem />
                                             <Box sx={{
@@ -334,23 +339,29 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, pr
                                                         flexDirection: 'row',
                                                         alignItems: 'center',
                                                     }}>
-                                                        <Typography sx={{ marginLeft: '1rem' }}>Confirm Delete ?</Typography>
-                                                        <CheckCircleIcon sx={{
+                                                        <Typography sx={{ marginLeft: '1rem' }}>Confirm Delete?</Typography>
+
+                                                        <IconButton sx={{
                                                             ':hover': { color: 'green' },
                                                             transition: '0.2s',
-                                                            marginLeft: '1.2rem'
+                                                            marginLeft: '1rem'
                                                         }}
                                                             onClick={() => {
                                                                 handleDelSubtask({ subtaskId: item.id, index: index })
                                                             }}
-                                                        />
-                                                        <CancelIcon sx={{
+                                                        >
+                                                            <CheckCircleIcon />
+                                                        </IconButton>
+
+                                                        <IconButton sx={{
                                                             ':hover': { color: '#7e1c1c' },
                                                             transition: '0.2s',
-                                                            marginLeft: '1.2rem'
+                                                            marginRight: '0.6rem'
                                                         }}
                                                             onClick={() => setEditSubtask({ ...editSubtask, del: false })}
-                                                        />
+                                                        >
+                                                            <CancelIcon />
+                                                        </IconButton>
                                                     </Box>)
                                                     :
                                                     (<>
@@ -383,9 +394,10 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, pr
                                                             labelPlacement="end"
                                                         />
                                                         <Divider orientation='vertical' flexItem />
-                                                        <DeleteIcon
+
+                                                        <IconButton
                                                             onClick={() => {
-                                                                console.log('click');
+                                                                // console.log('click');
                                                                 setEditSubtask({
                                                                     id: item.id,
                                                                     index: index,
@@ -395,12 +407,15 @@ export default function AddSubtaskDialog({ open, setOpen, subtaskList, token, pr
                                                                 })
                                                             }}
                                                             sx={{
-                                                                width: '60px',
+                                                                marginLeft: "0.2rem",
+                                                                marginRight: "0.2rem",
                                                                 color: 'red',
                                                                 ':hover': { color: '#7e1c1c' },
                                                                 transition: '0.2s',
                                                                 cursor: 'pointer',
-                                                            }} />
+                                                            }} >
+                                                            <DeleteIcon />
+                                                        </IconButton>
                                                     </>)}
                                             </Box>
                                         </Box>

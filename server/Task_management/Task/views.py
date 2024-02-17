@@ -49,7 +49,8 @@ class TaskListView(APIView):
             "title": request.data.get('title'),
             "project_id": request.data.get('project_id'),
             "status": 'New',
-            "display_order": Task.objects.filter(status="Progress").aggregate(Max("display_order", default=0)),
+            "display_order": list(Task.objects.filter(status="New").aggregate(
+                Max("display_order", default=0)).values())[0]+1,
             "created_by": request.user.pk
         }
         serializer = TaskListSerializer(data=data)
@@ -102,8 +103,7 @@ class TaskDetailedView(APIView, TaskUtils):
                 curr_status=curr_status,
             )
 
-        # return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'msg': 'Done'}, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, task_id, *args, **kwargs):
         task_instance = self.get_object(task_id)

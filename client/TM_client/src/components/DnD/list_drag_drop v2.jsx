@@ -15,6 +15,7 @@ import {
   LinearProgress
 
 } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -63,8 +64,6 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
         return;
       }
       const data = await response.json();
-      // console.log(data)
-      // getProjectData({ Id: projectId });
     }
     catch (error) {
       console.error("An error occurred during update:", error);
@@ -158,7 +157,7 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
         // console.log("cond 3 remove and add in diff section");
         const modifiedList = [...listItem];
         modifiedList.splice(indexes[1], 0, draggedItem);
-        console.log("status: ", draggedItem.status, "Section: ", mainIndex)
+        // console.log("status: ", draggedItem.status, "Section: ", mainIndex)
         newList.push(modifiedList);
         newSecRef.current = { item: draggedItem, newSection: index }
 
@@ -374,21 +373,24 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                     // justifyContent: "space-around",
                     alignItems: "center"
                   }}>
-                    <MenuIcon sx={{
+                    <IconButton sx={{
                       color: "#ccc",
                       ":hover": { color: "black" },
                       transition: "0.2s",
-                      marginBottom: "0.5rem",
+                      // marginBottom: "0.5rem",
                       marginRight: "0.5rem",
                       cursor: "pointer",
+                      padding: "0.4rem"
                     }}
                       onClick={(event) => setSubtaskOpen({ status: true, task_id: item.id })}
-                    />
+                    >
+                      <MenuIcon />
+                    </IconButton>
                     <Typography sx={{
                       pointerEvents: "none",
                       fontSize: "12px",
                       fontWeight: "600",
-                      marginBottom: "0.2rem",
+                      // marginBottom: "0.2rem",
                       color: "grey",
                       userSelect: "none"
                     }}>
@@ -399,7 +401,7 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                       pointerEvents: "none",
                       fontSize: "12px",
                       fontWeight: "600",
-                      marginBottom: "0.2rem",
+                      // marginBottom: "0.2rem",
                       color: "black",
                       userSelect: "none",
                     }}>
@@ -408,7 +410,7 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                   </div>
                   <LinearProgress variant="determinate" color="inherit" sx={{
                     color: percentage == 100 ? "green" : percentage > 50 ? "orange" : percentage > 30 ? "orangered" : "red",
-                    marginBottom: "1rem",
+                    marginBottom: "0.5rem",
                   }} value={percentage} />
                 </>
               ) : (<div style={{
@@ -466,7 +468,8 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                   {(delTask.status) && (delTask.taskId == item.id) ?
 
                     (<>
-                      <CheckCircleIcon sx={{
+
+                      <IconButton sx={{
                         ':hover': { color: 'green' },
                         transition: '0.2s',
                         marginLeft: '1.2rem'
@@ -475,8 +478,11 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                           delItem({ token: token, Id: item.id });
 
                         }}
-                      />
-                      <CancelIcon sx={{
+                      >
+                        <CheckCircleIcon />
+                      </IconButton>
+
+                      <IconButton sx={{
                         ':hover': { color: '#7e1c1c' },
                         transition: '0.2s',
                         marginLeft: '1.2rem'
@@ -484,7 +490,9 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                         onClick={() => {
                           setDelTask({ status: false, taskId: item.id })
                         }}
-                      />
+                      >
+                        <CancelIcon />
+                      </IconButton>
                     </>) :
                     (
                       <Box sx={{
@@ -494,27 +502,30 @@ const DnDComponent = ({ token, ListContainer1, SetListContainer1, projectId, set
                         alignItems: 'center',
                         justifyContent: 'space-between'
                       }}>
-                        <EditIcon
+                        <IconButton
                           sx={{
-                            color: 'blueviolet',
-                            width: '40%',
-                            ':hover': { color: 'violet' },
+                            color: 'cornflowerblue',
+                            ':hover': { color: 'blueviolet' },
                             transition: '0.2s',
                             cursor: 'pointer'
                           }}
                           onClick={(event) => handleSetOpen({ status: true, type: 'edit', taskId: item.id, title: item.title })}
-                        />
-                        <DeleteIcon
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
                           onClick={() => {
                             setDelTask({ status: true, taskId: item.id })
                           }}
                           sx={{
-                            width: '60px',
                             color: 'red',
                             ':hover': { color: '#7e1c1c' },
                             transition: '0.2s',
                             cursor: 'pointer',
-                          }} />
+                          }} >
+                          <DeleteIcon />
+                        </IconButton>
+
                       </Box>
                     )}
                 </Box>
