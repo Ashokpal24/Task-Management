@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import {
     List,
     ListItem,
-    ListItemButton
+    ListItemButton,
+    Chip,
 } from "@mui/material";
 import Box from '@mui/system/Box';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -28,6 +29,14 @@ import {
     getDataList,
     getDataItem
 } from '../utils.jsx'
+
+const section = {
+    0: 'New',
+    1: "Progress",
+    2: "QC",
+    3: "Completed"
+}
+
 
 const HeroPage = () => {
     const [showPage, setShowPage] = useState(false)
@@ -219,27 +228,37 @@ const HeroPage = () => {
                     <Drawer
                         anchor={"left"}
                         open={openDrawer}
+                        sx={{ overflow: "hidden" }}
                         onClose={() => {
                             setOpenDrawer(false);
                             openTempDrawer.current = false;
                         }}
                     >
                         <List sx={{
-                            width: 250,
-
+                            width: "300px",
                         }}>
-                            <Typography variant='h6'
+                            <Chip
+                                label={"Projects"}
+                                // variant="outlined"
                                 sx={{
+                                    fontSize: "24px",
+                                    fontWeight: "600",
+                                    padding: "0.2rem",
                                     marginLeft: "1rem",
                                     userSelect: "none",
-                                    marginBottom: "0.2rem"
-                                }}>Projects</Typography>
+                                    marginTop: "1rem",
+                                    marginBottom: "1rem",
+                                    backgroundColor: "#f2ce6b",
+                                    color: "black",
+                                }} />
                             {profile["project_list"].map((item, index) => (
                                 <ListItemButton
                                     key={item.id}
                                     sx={{
                                         color: "grey",
-                                        marginBottom: "0.2rem"
+                                        marginBottom: "0.2rem",
+                                        marginLeft: "1rem",
+                                        width: "90%"
                                     }}
                                     onClick={() => getProjectData({ Id: item.id })}
                                 >
@@ -247,6 +266,56 @@ const HeroPage = () => {
                                     {item.title}
                                 </ListItemButton>
                             ))}
+                            <Chip label={"Tasks"}
+                                sx={{
+                                    fontSize: "24px",
+                                    fontWeight: "600",
+                                    padding: "0.2rem",
+                                    marginLeft: "1rem",
+                                    userSelect: "none",
+                                    marginTop: "1rem",
+                                    marginBottom: "1rem",
+                                    backgroundColor: "#f2ce6b",
+                                    color: "black",
+                                }} />
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "start",
+                                    alignItems: "start",
+                                    width: "100%"
+                                }}
+                            >
+                                {ListContainer1.map((tasks, index) => (
+                                    <>
+                                        <Chip
+                                            label={section[index] + " (" + tasks.length + ")"}
+                                            sx={{
+                                                marginLeft: "2rem",
+                                                userSelect: "none",
+                                                marginBottom: "0.2rem"
+                                            }} />
+                                        {tasks.map((tasks, index) => (
+                                            <ListItemButton
+                                                key={tasks.id}
+                                                sx={{
+                                                    color: "grey",
+                                                    marginBottom: "0.2rem",
+                                                    marginLeft: "1rem",
+                                                    width: "90%"
+                                                }}
+                                            // onClick={() => getProjectData({ Id: tasks.id })}
+                                            >
+                                                <SubdirectoryArrowRightIcon />
+                                                {tasks.title}
+                                            </ListItemButton>
+                                        ))}
+                                    </>
+                                ))}
+
+                            </Box>
+
                         </List>
 
                     </Drawer>
